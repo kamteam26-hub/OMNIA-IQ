@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1020">
+<title>OMNIA IQ | Intelligence Operating System</title>
+<link rel="icon" type="image/png" href="/static/omnia-iq-logo.png">
+<link rel="stylesheet" href="/static/style.css?v=83.1">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand-lockup">
+      <img class="brand-logo" src="/static/omnia-iq-logo.png" alt="OMNIA IQ logo">
+      <div><h1>OMNIA <strong>IQ</strong></h1><p>Intelligence Operating System</p></div>
+    </div>
+    <button id="newChat" class="new-chat" type="button"><span>＋</span> New conversation</button>
+    <nav>
+      <button data-tab="chat" class="active"><span>◈</span> Chat</button>
+      <button data-tab="files"><span>▱</span> Files</button>
+      <button data-tab="dashboard"><span>◇</span> Dashboard</button>
+      <button data-tab="studios"><span>▦</span> Studios</button>
+      <button data-tab="tasks"><span>✓</span> Projects</button>
+      <button data-tab="memory"><span>◉</span> Memory</button>
+      <button data-tab="settings"><span>⚙</span> Settings</button>
+    </nav>
+    <div class="sidebar-bottom">
+      <div id="providerList" class="providers"></div>
+      <small>One intelligence. Unlimited possibilities.</small>
+    </div>
+  </aside>
+
+  <main class="workspace">
+    <header>
+      <div>
+        <div class="eyebrow">ADAPTIVE INTELLIGENCE</div>
+        <h2 id="pageTitle">OMNIA IQ Chat</h2>
+        <p id="status">Checking connected intelligence…</p>
+      </div>
+      <label class="web-toggle" id="modeToggle" title="Off: fastest single-model response. On: several local models collaborate."><input id="web" type="checkbox"><span></span><b id="modeLabel">Fast local</b></label>
+    </header>
+
+    <section id="chat" class="tab active">
+      <div id="messages" class="messages">
+        <div id="welcome" class="welcome">
+          <div class="welcome-mark brand-mark"><span></span><i></i><b></b></div>
+          <h3>How can OMNIA IQ help?</h3>
+          <p>Reason, research, write, create, plan, and coordinate work through adaptive model harmony.</p>
+        </div>
+      </div>
+      <div id="attachments"></div>
+      <form id="chatForm" class="composer">
+        <textarea id="message" placeholder="Ask OMNIA IQ anything…" required></textarea>
+        <label class="icon-button" title="Attach file">＋<input id="chatFile" type="file" hidden></label>
+        <button id="send" type="submit">Send <span>↑</span></button>
+      </form>
+      <div class="composer-note">OMNIA IQ selects and harmonizes configured models when useful. Verify important outputs.</div>
+    </section>
+
+
+    <section id="dashboard" class="tab">
+      <div class="section-heading"><div><div class="eyebrow">PRODUCTION CONTROL</div><h2>Dashboard</h2><p>Manage active projects, production stages, artifacts, and specialist studios.</p></div></div>
+      <div class="metric-grid">
+        <div class="metric"><span>Projects</span><strong id="metricProjects">0</strong></div>
+        <div class="metric"><span>Running</span><strong id="metricRunning">0</strong></div>
+        <div class="metric"><span>Completed</span><strong id="metricCompleted">0</strong></div>
+        <div class="metric"><span>Artifacts</span><strong id="metricArtifacts">0</strong></div>
+      </div>
+      <div class="panel"><div class="panel-title"><h3>Recent production</h3><button type="button" data-open-projects>Open projects</button></div><div id="dashboardProjects" class="list"></div></div>
+    </section>
+
+    <section id="studios" class="tab">
+      <div class="section-heading"><div><div class="eyebrow">SPECIALIST CREATION SUITE</div><h2>Studios</h2><p>Select a production specialty, then create a structured project with real downloadable output.</p></div></div>
+      <div id="studioGrid" class="studio-grid"></div>
+    </section>
+
+    <section id="files" class="tab">
+      <div class="section-heading"><div><div class="eyebrow">KNOWLEDGE</div><h2>Files</h2></div></div>
+      <label class="dropzone"><div class="upload-icon">＋</div><strong>Upload a file</strong><span>Attach documents for analysis and conversation</span><input id="fileUpload" type="file" hidden></label>
+      <div id="fileList" class="list"></div>
+    </section>
+
+    <section id="tasks" class="tab">
+      <div class="section-heading"><div><div class="eyebrow">AUTONOMOUS WORKSPACE</div><h2>Projects</h2><p>Describe the outcome. OMNIA IQ will plan, produce, verify, and report the work.</p></div></div>
+      <form id="taskForm" class="task-builder">
+        <div class="project-fields"><input id="taskInput" placeholder="Project name or desired outcome…" required><select id="projectType"><option value="auto">Auto-detect studio</option><option value="website">Website Studio</option><option value="software">Software Studio</option><option value="video">Video Studio</option><option value="automation">Automation Studio</option><option value="marketing">Marketing Studio</option><option value="document">Document Studio</option></select></div>
+        <textarea id="taskInstructions" placeholder="Requirements, constraints, expected deliverable, and definition of done…"></textarea>
+        <button>Create project</button>
+      </form>
+      <div id="taskList" class="list"></div>
+    </section>
+
+    <section id="memory" class="tab">
+      <div class="section-heading"><div><div class="eyebrow">LONG-TERM INTELLIGENCE</div><h2>Memory</h2><p id="memoryStats">Loading memory…</p></div></div>
+      <form id="memoryForm" class="task-builder">
+        <textarea id="memoryInput" placeholder="Teach OMNIA IQ a durable fact, preference, procedure, or project rule…" required></textarea>
+        <button>Save memory</button>
+      </form>
+      <div id="memoryList" class="list"></div>
+    </section>
+
+    <section id="settings" class="tab">
+      <div class="section-heading"><div><div class="eyebrow">SYSTEM CAPABILITIES</div><h2>Settings</h2><p>Manage local production runtimes used to create real project files.</p></div></div>
+      <div class="panel media-runtime-panel">
+        <div class="panel-title"><div><h3>Production Runtimes</h3><p id="mediaSummary">Checking video and speech engines…</p></div><button id="refreshMedia" type="button">Refresh</button></div>
+        <div id="mediaRuntime" class="runtime-grid"></div>
+        <div class="runtime-actions">
+          <button id="installFfmpeg" type="button">Install FFmpeg automatically</button>
+          <button id="installSpeech" type="button">Install Piper speech engine</button>
+          <button id="testSpeech" type="button">Test speech</button>
+          <small>Speech uses local Piper neural TTS with a bundled starter voice. Manual fallback: place <code>piper.exe</code> in <code>tools/piper/bin</code> and voice files in <code>tools/piper/voices</code>.</small>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+<div id="connectionBanner" class="connection-banner hidden">Backend connection interrupted. OMNIA IQ will retry when you reload this page.</div>
+<div id="toast" class="toast hidden"></div>
+<script src="/static/app.js?v=83.2.1"></script>
+</body>
+</html>

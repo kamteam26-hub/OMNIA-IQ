@@ -1,0 +1,9 @@
+[2026-08-07 21:20:44] Using Ollama at C:\Users\Administrator\AppData\Local\Programs\Ollama\ollama.exe
+[2026-08-07 21:20:44] Detected approximately 8 GB of RAM.
+[2026-08-07 21:20:47] Pulling model gemma3:4b. This can take time.
+[2026-08-07 21:20:56] Pulling model qwen2.5:7b. This can take time.
+[2026-08-07 21:20:58] Pulling model llama3.2:3b. This can take time.
+[2026-08-07 21:21:00] Pulling model mistral:7b. This can take time.
+[2026-08-07 21:21:03] Pulling model deepseek-r1:7b. This can take time.
+[2026-08-07 21:21:05] Saved the selected profile to .env.
+[2026-08-07 21:21:05] Installed models: gemma3:4b, qwen2.5:7b, llama3.2:3b, mistral:7b, deepseek-r1:7b
