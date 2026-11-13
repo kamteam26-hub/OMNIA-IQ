@@ -8,8 +8,18 @@ function notify(t){toast.textContent=t;toast.classList.remove("hidden");clearTim
 async function apiFetch(url,options={},timeoutMs=900000){
  const controller=new AbortController();
  const timer=setTimeout(()=>controller.abort(),timeoutMs);
- try{return await fetch(url,{...options,signal:controller.signal})}
+ try{
+  const r=await fetch(url,{...options,signal:controller.signal});
+  if(String(url).startsWith("/api/")&&[502,503,504,524].includes(r.status)){
+   let detail="";try{detail=(await r.clone().json()).detail||""}catch(_){}
+   if(r.status===503&&detail)throw new Error(detail);
+   if(r.status===504||r.status===524)throw new Error("The web connection timed out, but OMNIA IQ may still be working on your PC. Check this page again in a minute.");
+   throw new Error("Your PC isn't reachable. Make sure OMNIA IQ and START_REMOTE.bat are running on your computer and it is online.");
+  }
+  return r;
+ }
  catch(err){
+  if(err instanceof Error&&!["AbortError","TypeError"].includes(err.name))throw err;
   if(err.name==="AbortError")throw new Error("OMNIA IQ took too long to respond. The local model may be overloaded.");
   throw new Error("Connection to the OMNIA IQ backend was lost. Keep the OMNIA window open, check logs/runtime.log, and try Fast local mode for large files.");
  }finally{clearTimeout(timer)}
@@ -48,6 +58,8 @@ async function loadTasks(){
  document.querySelectorAll("[data-delete]").forEach(b=>b.onclick=async()=>{await apiFetch(`/api/projects/${b.dataset.delete}`,{method:"DELETE"});loadTasks()});
  for(const box of document.querySelectorAll("[data-artifacts]")){const r=await apiFetch(`/api/projects/${box.dataset.artifacts}/artifacts`,{},30000),d=await r.json();artifactCount+=(d.artifacts||[]).length;box.innerHTML=(d.artifacts||[]).map(a=>`<a class="artifact-link ${a.mime_type==="application/zip"?"package":""}" href="/api/projects/artifacts/${a.id}/download">${a.mime_type==="application/zip"?"Download project package":"Download"} ${esc(a.filename)}</a>`).join("")}
  updateDashboard(d.tasks,artifactCount);
+ clearTimeout(window.__taskPoll);
+ if(d.tasks.some(t=>t.status==="running"))window.__taskPoll=setTimeout(()=>safeLoad("Projects",loadTasks),20000);
 }
 async function loadMemory(){const r=await apiFetch("/api/memory",{},30000),d=await r.json();$("#memoryStats").textContent=`${d.stats.c} memories · ${d.stats.chars.toLocaleString()} stored characters`;$("#memoryList").innerHTML=(d.memories||[]).map(m=>`<div class="item"><div class="grow"><strong>${esc(m.kind)}</strong><small>${esc(m.content)}</small></div><button class="delete" data-forget="${m.id}">×</button></div>`).join("")||'<div class="empty-state">No long-term memories yet.</div>';document.querySelectorAll("[data-forget]").forEach(b=>b.onclick=async()=>{await apiFetch(`/api/memory/${b.dataset.forget}`,{method:"DELETE"});loadMemory()})}
 function showTab(name){document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));document.querySelectorAll("nav [data-tab]").forEach(b=>b.classList.remove("active"));$(`#${name}`).classList.add("active");document.querySelector(`[data-tab="${name}"]`).classList.add("active");$("#pageTitle").textContent=name==="chat"?"OMNIA IQ Chat":name[0].toUpperCase()+name.slice(1)}

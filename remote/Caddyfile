@@ -1,0 +1,30 @@
+# OMNIA IQ remote gatekeeper.
+# Only requests carrying the secret X-Omnia-Key header (sent by your Vercel site)
+# reach the OMNIA IQ backend on 127.0.0.1:8000. Everything else gets 403.
+{
+	admin off
+}
+
+http://:8787 {
+	bind 127.0.0.1
+
+	@authorized header X-Omnia-Key "{$OMNIA_BACKEND_KEY}"
+
+	handle @authorized {
+		request_body {
+			max_size 2GB
+		}
+		reverse_proxy 127.0.0.1:8000 {
+			header_up -X-Omnia-Key
+			transport http {
+				dial_timeout 10s
+				read_timeout 0
+				write_timeout 0
+			}
+		}
+	}
+
+	handle {
+		respond "Forbidden" 403
+	}
+}

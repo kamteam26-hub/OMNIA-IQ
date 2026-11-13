@@ -1,0 +1,9 @@
+# Only the web interface + middleware are deployed to Vercel.
+data/
+logs/
+tools/
+remote/
+omnia.db
+*.bat
+*.ps1
+.env
