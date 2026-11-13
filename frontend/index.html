@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#0b1020">
 <title>OMNIA IQ | Intelligence Operating System</title>
 <link rel="icon" type="image/png" href="/static/omnia-iq-logo.png">
-<link rel="stylesheet" href="/static/style.css?v=84.0">
+<link rel="stylesheet" href="/static/style.css?v=85.0">
 </head>
 <body>
 <div class="app-shell">
@@ -38,7 +38,7 @@
         <h2 id="pageTitle">OMNIA IQ Chat</h2>
         <p id="status">Checking connected intelligence…</p>
       </div>
-      <label class="web-toggle" id="modeToggle" title="Off: fastest single-model response. On: several local models collaborate."><input id="web" type="checkbox"><span></span><b id="modeLabel">Fast local</b></label>
+      <label class="web-toggle" id="modeToggle" title="Off: fastest single-model response. On: specialist agents collaborate."><input id="web" type="checkbox"><span></span><b id="modeLabel">Fast</b></label>
     </header>
 
     <section id="chat" class="tab active">
@@ -101,7 +101,7 @@
     </section>
 
     <section id="settings" class="tab">
-      <div class="section-heading"><div><div class="eyebrow">SYSTEM CAPABILITIES</div><h2>Settings</h2><p>Manage local production runtimes used to create real project files.</p></div></div>
+      <div class="section-heading"><div><div class="eyebrow">SYSTEM CAPABILITIES</div><h2>Settings</h2><p>Cloud production runtimes used to create real project files.</p></div></div>
       <div class="panel media-runtime-panel">
         <div class="panel-title"><div><h3>Production Runtimes</h3><p id="mediaSummary">Checking video and speech engines…</p></div><button id="refreshMedia" type="button">Refresh</button></div>
         <div id="mediaRuntime" class="runtime-grid"></div>
@@ -109,7 +109,7 @@
           <button id="installFfmpeg" type="button">Install FFmpeg automatically</button>
           <button id="installSpeech" type="button">Install Piper speech engine</button>
           <button id="testSpeech" type="button">Test speech</button>
-          <small>Speech uses local Piper neural TTS with a bundled starter voice. Manual fallback: place <code>piper.exe</code> in <code>tools/piper/bin</code> and voice files in <code>tools/piper/voices</code>.</small>
+          <small>Cloud videos are rendered with bundled FFmpeg and on-screen captions. Voice-over (Piper) is only available in the local PC version.</small>
         </div>
       </div>
     </section>
@@ -117,6 +117,6 @@
 </div>
 <div id="connectionBanner" class="connection-banner hidden">Backend connection interrupted. OMNIA IQ will retry when you reload this page.</div>
 <div id="toast" class="toast hidden"></div>
-<script src="/static/app.js?v=84.0"></script>
+<script src="/static/app.js?v=85.0"></script>
 </body>
 </html>
