@@ -2,10 +2,12 @@
   "name": "omnia-iq-web",
   "private": true,
   "type": "module",
-  "engines": { "node": "22.x" },
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
+    "@libsql/client": "^0.15.0",
     "@vercel/blob": "^2.6.1",
-    "@vercel/functions": "latest",
     "ffmpeg-static": "^5.2.0"
   }
 }

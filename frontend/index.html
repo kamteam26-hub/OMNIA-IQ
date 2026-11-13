@@ -3,90 +3,681 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b1020">
+<meta name="theme-color" content="#070b16">
 <title>OMNIA IQ | Intelligence Operating System</title>
+<link rel="icon" type="image/svg+xml" href="/static/omnia-iq-logo.svg">
 <link rel="icon" type="image/png" href="/static/omnia-iq-logo.png">
-<link rel="stylesheet" href="/static/style.css?v=85.1">
+<link rel="stylesheet" href="/static/style.css?v=88.4.0">
+<link rel="stylesheet" href="/static/brand.css?v=88.4.0">
 </head>
-<body>
+<body data-tab="chat">
+<!-- OMNIA IQ icon set: one stroke family (24px grid, 1.8 stroke, round caps). Use <svg class="i"><use href="#i-name"/></svg>. -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <defs>
+    <linearGradient id="omniaGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a78bfa"/><stop offset=".55" stop-color="#6366f1"/><stop offset="1" stop-color="#22d3ee"/></linearGradient>
+  </defs>
+  <symbol id="i-logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#0b1020"/><circle cx="32" cy="32" r="21" fill="none" stroke="url(#omniaGrad)" stroke-width="5"/><ellipse cx="32" cy="32" rx="9.5" ry="12" fill="none" stroke="#fff" stroke-width="4"/><circle cx="32" cy="32" r="3.6" fill="#67e8f9"/><path d="M32 6.5v7M57.5 32h-7M32 57.5v-7M6.5 32h7" stroke="#c4b5fd" stroke-width="3.2" stroke-linecap="round"/></symbol>
+  <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5.5h16v10H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="4" rx="1.5"/><rect x="13" y="10" width="7" height="10" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-film" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 9.5h4M3 14.5h4M17 9.5h4M17 14.5h4"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5z"/><path d="m3 13 9 5 9-5"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3 10 14"/><path d="m21 3-7 18-4-7-7-4z"/></symbol>
+  <symbol id="i-rocket" viewBox="0 0 24 24"><path d="M14 4c3-1.5 6-1 6-1s.5 3-1 6l-6 6-4-4z"/><path d="M9 11 5.5 10.5 3 13l4 1M13 15l.5 3.5L11 21l-1-4"/><circle cx="15.5" cy="8.5" r="1.3"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2.8v2.4M12 18.8v2.4M4.2 7.5l2 1.2M17.8 15.3l2 1.2M4.2 16.5l2-1.2M17.8 8.7l2-1.2"/><circle cx="12" cy="12" r="7"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-clip" viewBox="0 0 24 24"><path d="m20 11.5-7.8 7.8a5 5 0 0 1-7.1-7.1l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7l-8.4 8.4a1.7 1.7 0 0 1-2.4-2.4l7.7-7.7"/></symbol>
+  <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4 2.8 19.5h18.4z"/><path d="M12 10v4.5M12 17.2v.1"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.8v.1"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.7 5.6 3.7 9S14.6 18.4 12 21c-2.6-2.6-3.7-5.6-3.7-9S9.4 5.6 12 3"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.6 3.1 8 7.5 9.5 4.4-1.5 7.5-4.9 7.5-9.5V6z"/><path d="m9 12 2.2 2.2L15.5 10"/></symbol>
+  <symbol id="i-server" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="16" height="6.5" rx="1.5"/><path d="M8 7.2h.1M8 16.8h.1"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="m11 12 8.5-8.5M16 7l2.5 2.5M14 9l2 2"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.3-4.6L4 8M4 4v4h4M4 13a8 8 0 0 0 14.3 4.6L20 16M20 20v-4h-4"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V5M7 9.5l5-5 5 5M5 20h14"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c1-4 4-6 7.5-6s6.5 2 7.5 6"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5M15.5 5.2a3.5 3.5 0 0 1 0 6.6M17.5 14.8c2 .7 3.4 2.4 4 5.2"/></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></symbol>
+  <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5.5L20 3.5v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="15.5" r="2.5"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><circle cx="9" cy="10" r="1.8"/><path d="m4 18 5.5-5.5 4 4 2.5-2.5 4.5 4.5"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10.5 5-3v9l-5-3"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="15" rx="2"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11.5" height="11.5" rx="2"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7.5a2 2 0 0 0 2 2h2.5"/></symbol>
+  <symbol id="i-network" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.2"/><circle cx="5" cy="18.5" r="2.2"/><circle cx="19" cy="18.5" r="2.2"/><path d="M12 7.2v4.3M12 11.5 6.5 16.7M12 11.5l5.5 5.2"/></symbol>
+  <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18.5a4.5 4.5 0 0 1-.6-9A6 6 0 0 1 18 9a4.8 4.8 0 0 1-.5 9.5z"/></symbol>
+  <symbol id="i-wand" viewBox="0 0 24 24"><path d="m4 20 11-11M14 5V3M19 10h2M17.5 6.5 19 5M9 4.5 10 6M18 13.5l1.5 1"/><path d="m13 7 4 4"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6.5h11M9 12h11M9 17.5h11"/><path d="m3.5 6.5 1.2 1.2 2-2.2M3.5 12l1.2 1.2 2-2.2M3.5 17.5l1.2 1.2 2-2.2"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></symbol>
+  <symbol id="i-scissors" viewBox="0 0 24 24"><circle cx="6" cy="6.5" r="2.7"/><circle cx="6" cy="17.5" r="2.7"/><path d="M8.2 8.2 20 18M8.2 15.8 20 6"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M15.5 4.5 19.5 8.5 8 20H4v-4z"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4.5h12l-2.5 4 2.5 4H5"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17 7h.1"/></symbol>
+  <symbol id="i-note" viewBox="0 0 24 24"><path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5H14"/><path d="M14 3c.5 2.5 2.5 4.5 5.5 4.5"/></symbol>
+  <symbol id="i-pulse" viewBox="0 0 24 24"><path d="M3 12h4l2.5-6 4 12 2.5-6H21"/></symbol>
+  <symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7.5" ry="2.8"/><path d="M4.5 6v12c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8V6M4.5 12c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8"/></symbol>
+  </g>
+</svg>
+
 <div class="app-shell">
   <aside class="sidebar">
     <div class="brand-lockup">
-      <img class="brand-logo" src="/static/omnia-iq-logo.png" alt="OMNIA IQ logo">
+      <svg class="brand-logo" viewBox="0 0 64 64" role="img" aria-label="OMNIA IQ"><use href="#i-logo"/></svg>
       <div><h1>OMNIA <strong>IQ</strong></h1><p>Intelligence Operating System</p></div>
     </div>
-    <button id="newChat" class="new-chat" type="button"><span>＋</span> New conversation</button>
-    <nav>
-      <button data-tab="chat" class="active"><span>◈</span> Chat</button>
-      <button data-tab="files"><span>▱</span> Files</button>
-      <button data-tab="dashboard"><span>◇</span> Dashboard</button>
-      <button data-tab="studios"><span>▦</span> Studios</button>
-      <button data-tab="tasks"><span>✓</span> Projects</button>
-      <button data-tab="memory"><span>◉</span> Memory</button>
-      <button data-tab="settings"><span>⚙</span> Settings</button>
+    <button id="newChat" class="new-chat" type="button"><svg class="i"><use href="#i-plus"/></svg><span class="label">New conversation</span></button>
+    <input id="conversationSearch" class="conversation-search" type="search" placeholder="Search conversations" aria-label="Search conversations" />
+    <div id="conversationList" class="conversation-list"></div>
+    <nav aria-label="Main">
+      <div class="nav-group">Workspace</div>
+      <button data-tab="chat" class="active"><svg class="i"><use href="#i-chat"/></svg><span class="label">Chat</span></button>
+      <button data-tab="files"><svg class="i"><use href="#i-folder"/></svg><span class="label">Files</span></button>
+      <button data-tab="dashboard"><svg class="i"><use href="#i-grid"/></svg><span class="label">Dashboard</span></button>
+      <div class="nav-group">Create</div>
+      <button data-tab="studios"><svg class="i"><use href="#i-film"/></svg><span class="label">Video Studio</span></button>
+      <button data-tab="tasks"><svg class="i"><use href="#i-layers"/></svg><span class="label">Projects</span></button>
+      <button data-tab="memory"><svg class="i"><use href="#i-spark"/></svg><span class="label">Memory</span></button>
+      <div class="nav-group">Ship</div>
+      <button data-tab="agentstudio"><svg class="i"><use href="#i-spark"/></svg><span class="label">Agent Studio</span></button>
+      <button data-tab="automation"><svg class="i"><use href="#i-gear"/></svg><span class="label">Automation</span></button>
+      <button data-tab="publishing"><svg class="i"><use href="#i-send"/></svg><span class="label">Publishing</span></button>
+      <button data-tab="launch"><svg class="i"><use href="#i-rocket"/></svg><span class="label">Launch</span></button>
+      <button data-tab="settings"><svg class="i"><use href="#i-gear"/></svg><span class="label">Settings</span></button>
     </nav>
-    <div class="sidebar-bottom">
+    <div class="sidebar-foot"><span class="foot-dot"></span><span>v88.1 · local-first</span></div>
+    <div class="sidebar-bottom" hidden>
       <div id="providerList" class="providers"></div>
       <small>One intelligence. Unlimited possibilities.</small>
     </div>
   </aside>
 
   <main class="workspace">
-    <header>
+    <header class="topbar">
       <div>
         <div class="eyebrow">ADAPTIVE INTELLIGENCE</div>
         <h2 id="pageTitle">OMNIA IQ Chat</h2>
         <p id="status">Checking connected intelligence…</p>
       </div>
-      <label class="web-toggle" id="modeToggle" title="Off: fastest single-model response. On: specialist agents collaborate."><input id="web" type="checkbox"><span></span><b id="modeLabel">Fast</b></label>
+      <div class="header-toggle-group">
+        <label class="web-toggle" id="agentModeToggle" title="On: OMNIA plans and uses tools - web search, reading pages, creating files, and your browser through the OMNIA extension (every browser action needs your approval). Off: one direct answer."><input id="agentMode" type="checkbox" checked><span></span><b id="agentLabel">Agent mode</b></label>
+        <label class="web-toggle" id="modeToggle" title="Off: fastest single-model response. On: several local models collaborate."><input id="web" type="checkbox"><span></span><b id="modeLabel">Fast local</b></label>
+        <label class="web-toggle" id="webSearchModeToggle" title="Off: answers from the model's own training data. On: OMNIA IQ searches the web first and grounds its answer in current sources."><input id="webSearch" type="checkbox"><span></span><b id="webSearchLabel">No web search</b></label>
+      </div>
     </header>
 
     <section id="chat" class="tab active">
       <div id="messages" class="messages">
         <div id="welcome" class="welcome">
-          <div class="welcome-mark brand-mark"><span></span><i></i><b></b></div>
+          <svg class="welcome-logo" viewBox="0 0 64 64" aria-hidden="true"><use href="#i-logo"/></svg>
           <h3>How can OMNIA IQ help?</h3>
-          <p>Reason, research, write, create, plan, and coordinate work through adaptive model harmony.</p>
+          <p>Ask anything. In Agent mode OMNIA researches the web, reads pages and files, creates documents and code, and works in your browser with your approval.</p>
         </div>
       </div>
       <div id="attachments"></div>
       <form id="chatForm" class="composer">
-        <textarea id="message" placeholder="Ask OMNIA IQ anything…" required></textarea>
-        <label class="icon-button" title="Attach file">＋<input id="chatFile" type="file" hidden></label>
-        <button id="send" type="submit">Send <span>↑</span></button>
+        <textarea id="message" placeholder="Ask OMNIA anything, or give it a task…" required></textarea>
+        <label class="icon-button" title="Attach file" aria-label="Attach file"><svg class="i"><use href="#i-clip"/></svg><input id="chatFile" type="file" hidden></label>
+        <button id="send" type="submit">Send <svg class="i"><use href="#i-arrow-up"/></svg></button>
       </form>
-      <div class="composer-note">OMNIA IQ selects and harmonizes configured models when useful. Verify important outputs.</div>
+      <div class="composer-note"><label class="agent-model-pick" title="Which model Agent mode uses. Auto picks the best ready model that supports tool calling."><span>Model</span><select id="agentModel"><option value="">Auto · best tool-capable model</option></select></label><label class="agent-model-pick" title="Answer as one of your Agent Studio specialists. OMNIA keeps its own tools and approval rules."><span>Agent</span><select id="chatAgent"><option value="">OMNIA (default)</option></select></label><span id="agentBrowserChip" class="agent-chip">Browser extension</span> OMNIA can make mistakes. Verify important outputs.</div>
     </section>
 
+    <section id="agentstudio" class="tab">
+      <div class="page-hero">
+        <div class="page-hero-icon"><svg class="i"><use href="#i-spark"/></svg></div>
+        <div class="page-hero-copy"><div class="eyebrow">AGENT STUDIO</div><h2>Your AI specialists</h2><p>Pick a template, describe the job, test it, then use it in Chat. Saving and publishing keep every version.</p></div>
+        <div class="btn-row"><button type="button" id="asNew" class="primary"><svg class="i"><use href="#i-plus"/></svg> New agent</button></div>
+      </div>
+      <div class="as-layout">
+        <aside class="panel as-list" aria-label="My agents">
+          <div class="as-list-head"><h3><svg class="i"><use href="#i-users"/></svg> My agents</h3><span id="asCount" class="badge">0</span></div>
+          <input id="asSearch" type="search" placeholder="Search agents" aria-label="Search agents">
+          <ul id="asAgentList" class="as-agent-list"><li class="empty-mini">No agents yet. Pick a template and save.</li></ul>
+        </aside>
+        <div class="as-main">
+          <ol class="as-steps" aria-label="Progress">
+            <li data-step="build"><a href="#asBuild"><b>1</b> Build</a></li>
+            <li data-step="test"><a href="#asTest"><b>2</b> Test</a></li>
+            <li data-step="publish"><a href="#asPublishPanel"><b>3</b> Publish</a></li>
+            <li data-step="use"><a href="#asPublishPanel"><b>4</b> Use in Chat</a></li>
+          </ol>
+
+          <section class="panel" id="asBuild">
+            <div class="as-panel-head"><h3><svg class="i"><use href="#i-wand"/></svg> <span id="asTitle">New agent</span></h3><div class="btn-row" id="asBadges"></div></div>
+            <p class="muted small as-label">Start from a template</p>
+            <div id="agentCategoryGrid" class="as-templates" role="group" aria-label="Agent template"></div>
+            <p id="agentCategoryDescription" class="muted small" role="status"></p>
+            <div class="form-grid">
+              <label>Name <input id="agentName" maxlength="100" placeholder="e.g. YouTube Script Writer" autocomplete="off"></label>
+              <label>Model <select id="asModel"><option value="det">Quick check · no AI (text tools only)</option></select></label>
+              <label class="span-2"><span class="as-row">Instructions <button type="button" id="asUseTemplate" class="ghost as-mini">Use template text</button></span>
+                <textarea id="agentInstructions" maxlength="8000" rows="7" placeholder="What is this agent for? Who is the audience? What should every answer include? When should it stop and ask?"></textarea><span class="counter" id="asInstrCount"></span></label>
+              <select id="agentCategory" hidden aria-hidden="true" tabindex="-1"></select>
+            </div>
+            <details class="as-advanced">
+              <summary><svg class="i"><use href="#i-sliders"/></svg> Advanced settings <small class="muted">tools, specialists, limits</small></summary>
+              <div class="form-grid">
+                <fieldset><legend>Read-only test tools</legend>
+                  <label class="as-check"><input type="checkbox" value="text.length" class="agentTool"> Text length</label>
+                  <label class="as-check"><input type="checkbox" value="text.keyword_count" class="agentTool"> Keyword count</label></fieldset>
+                <fieldset><legend>Can ask these published agents for help (up to 4)</legend><div id="asHandoffs" class="as-handoffs"><span class="muted small">Publish other agents first.</span></div></fieldset>
+                <label>Max steps per answer <input id="agentMaxSteps" type="number" min="1" max="10" value="4"></label>
+                <label>Max model calls (incl. helpers) <input id="agentMaxModelCalls" type="number" min="1" max="20" value="12"></label>
+              </div>
+            </details>
+            <div class="form-actions">
+              <span id="asDirty" class="muted small" role="status"></span>
+              <button type="button" id="asUseInChat"><svg class="i"><use href="#i-chat"/></svg> Use in Chat</button>
+              <button type="button" id="agentSave" class="primary"><svg class="i"><use href="#i-check"/></svg> Save</button>
+            </div>
+          </section>
+
+          <section class="panel" id="asTest">
+            <div class="as-panel-head"><h3><svg class="i"><use href="#i-play"/></svg> Test</h3><span class="muted small">Unsaved changes are saved automatically before a test.</span></div>
+            <div id="asTranscript" class="as-transcript" aria-live="polite"><p class="empty-mini">Ask the agent something it will do for you, and check the answer.</p></div>
+            <div class="as-composer">
+              <textarea id="agentInput" maxlength="4000" rows="2" placeholder="Type a test request… (Ctrl+Enter to run)"></textarea>
+              <button type="button" id="agentTest" class="primary"><svg class="i"><use href="#i-play"/></svg> Run test</button>
+            </div>
+            <div class="as-test-options">
+              <label class="as-check" id="asKeywordWrap" hidden>Keyword <input id="agentKeyword" maxlength="100"></label>
+              <label class="as-check" id="asSessionWrap"><input type="checkbox" id="asRemember" checked> Remember this test conversation</label>
+              <label class="as-check" id="asWebWrap" hidden><input type="checkbox" id="agentUseWeb"> Include live web results</label>
+              <button type="button" id="agentSessionClear" class="ghost as-mini">Clear conversation</button>
+            </div>
+            <details class="as-advanced"><summary><svg class="i"><use href="#i-list"/></svg> Technical details of the last result</summary><pre id="agentResults"></pre></details>
+          </section>
+
+          <section class="panel" id="asPublishPanel">
+            <div class="as-panel-head"><h3><svg class="i"><use href="#i-rocket"/></svg> Publish</h3><span id="agentVersion" class="muted small" role="status"></span></div>
+            <ol id="asPipeline" class="as-pipeline">
+              <li data-k="saved">Saved</li><li data-k="tested">Tested</li><li data-k="staged">Staged</li><li data-k="approved">Approved</li><li data-k="published">Published</li>
+            </ol>
+            <p id="asPublishHint" class="muted small">Publishing locks this version so other agents can call it as a specialist. You can use any saved agent in Chat right away.</p>
+            <div class="form-actions"><button type="button" id="asPublishAll" class="primary"><svg class="i"><use href="#i-rocket"/></svg> Publish this version</button></div>
+            <details class="as-advanced"><summary><svg class="i"><use href="#i-shield"/></svg> Step-by-step controls</summary>
+              <div class="btn-row"><button id="agentStage" type="button">Promote to staging</button><button id="agentPublish" type="button">Request approval</button><button id="agentApprove" type="button">Approve request (operator)</button><button id="agentFinalize" type="button">Publish approved version</button></div>
+            </details>
+          </section>
+
+          <details class="panel" id="asLearn">
+            <summary><svg class="i"><use href="#i-book"/></svg> Teach this agent <small class="muted" id="asLearnCount">reviewed memory &amp; web research</small></summary>
+            <div class="as-learn-grid">
+              <div>
+                <h4>Memory &amp; corrections</h4>
+                <p class="muted small">Add a fact or correction, then approve it. Approved memory is used in every answer and carries over to new versions.</p>
+                <textarea id="agentMemoryText" maxlength="2000" rows="3" placeholder="e.g. Our brand voice is warm and plain-spoken; never use the word ‘synergy’."></textarea>
+                <div class="btn-row"><button id="agentMemoryPropose" type="button" class="primary">Add &amp; approve</button><button id="agentMemoryRefresh" type="button" class="ghost">Refresh</button></div>
+                <div id="agentMemoryList" class="as-memory-list"></div>
+              </div>
+              <div>
+                <h4>Web research</h4>
+                <p class="muted small">Search the web (Brave Search key required), then add useful results to memory for review.</p>
+                <div class="as-composer"><input id="agentResearchQuery" maxlength="250" placeholder="What should this agent learn about?"><button id="agentResearch" type="button">Search</button></div>
+                <div id="agentResearchResults" class="as-memory-list"></div>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== PUBLISHING CENTER ============================== -->
+    <section id="automation" class="tab om-auto-screen">
+      <div class="om-auto-appbar"><button id="autoToggleSidebar" type="button" class="om-auto-secondary" aria-label="Toggle workflow list">☰ &nbsp; Workflows list</button><div class="om-auto-title"><input id="autoName" aria-label="Workflow name" maxlength="100" placeholder="Untitled Workflow"><span id="autoState" class="om-auto-status">Draft</span><span id="autoEditorTitle" class="om-auto-visually-hidden">New Workflow</span></div><div class="om-auto-head-actions"><button id="autoSave" type="button" class="om-auto-secondary">Save</button><button id="autoPublish" type="button">Save &amp; turn on</button><button id="autoUnpublish" type="button" class="om-auto-secondary">Turn off</button></div></div>
+      <div class="om-auto-navigation"><div class="om-auto-tabs" role="tablist" aria-label="Automation views"><button type="button" data-auto-tab="builder" aria-selected="true">Builder</button><button type="button" data-auto-tab="settings" aria-selected="false">Settings</button><button type="button" data-auto-tab="enrollment" aria-selected="false">Enrollment history</button><button type="button" data-auto-tab="logs" aria-selected="false">Execution logs</button></div><button id="autoTest" type="button" class="om-auto-secondary">▶ Test with sample data</button></div>
+      <div class="om-auto-layout">
+        <aside class="om-auto-sidebar"><div class="om-auto-heading"><h3>Workflows</h3><button type="button" id="autoNew">+ New</button></div><button type="button" id="autoShowTemplates" class="om-auto-secondary">★ Start from a template</button><input id="autoSearch" type="search" placeholder="Search workflows" aria-label="Search workflows"><div id="autoWorkflows" class="om-auto-workflows"></div><button type="button" id="autoRefresh" class="om-auto-secondary">Refresh workflows</button></aside>
+        <main class="om-auto-builder">
+          <div class="om-auto-view" data-auto-view="templates" hidden><div class="om-auto-content-panel"><h3>Start from a template</h3><p>Pick one, fill in anything highlighted, then click <b>Save &amp; turn on</b>.</p><div id="autoTemplates" class="om-auto-templates"></div></div></div>
+          <div class="om-auto-view" data-auto-view="builder">
+            <div class="om-auto-canvas" aria-label="Visual workflow builder"><div class="om-auto-canvas-tools"><button type="button" id="autoFit" title="Fit workflow to screen">⛶ Fit</button><button type="button" id="autoZoomIn" title="Zoom in">+</button><span id="autoZoomValue">100%</span><button type="button" id="autoZoomOut" title="Zoom out">−</button><button type="button" id="autoZoomReset" title="Reset zoom">Reset</button></div>
+              <div id="autoCanvasViewport" class="om-auto-viewport"><div id="autoCanvasTrack" class="om-auto-track"><div class="om-auto-flow">
+                <div class="om-auto-node trigger"><span class="om-auto-chip">01 · TRIGGER</span><h4>When this happens</h4><p>Select a source and event to start your workflow.</p><div class="om-auto-fields"><label>Section<select id="autoSection"><option value="publishing">Publishing</option><option value="tasks">Projects &amp; renders</option><option value="schedule">Schedule (time-based)</option><option value="chat">Chat</option><option value="files">Files</option><option value="memory">Memory</option><option value="launch">Launch</option><option value="settings">Settings</option><option value="studios">Studio</option><option value="dashboard">Dashboard</option></select></label><label>Event<select id="autoEvent"></select></label><label id="autoEveryWrap" hidden>Repeat every (minutes)<input id="autoEvery" type="number" min="5" max="10080" value="60"></label><label id="autoDailyWrap" hidden>Time of day<input id="autoDaily" type="time" value="09:00"></label><p id="autoNextRun" class="om-auto-hint"></p></div></div>
+            
+                <div class="om-auto-line"></div><div id="autoNodes"></div><div class="om-auto-line"></div><div class="om-auto-add"><button id="autoAdd" type="button">+ Add action</button><div id="autoActionPicker" class="om-auto-picker" hidden><button type="button" data-kind="notify">🔔 Notify me in OMNIA</button><button type="button" data-kind="webhook">🌐 Send to Slack / Discord / Zapier</button><button type="button" data-kind="publish_draft">📤 Prepare publishing draft</button><button type="button" data-kind="wait">Wait / delay</button><button type="button" data-kind="condition">Condition: stop if false</button><button type="button" data-kind="if">IF: start Yes / No branch</button><button type="button" data-kind="set_variable">Set variable</button><button type="button" data-kind="increment">Increment variable</button><button type="button" data-kind="format_text">Format text</button><button type="button" data-kind="filter">Filter event</button><button type="button" data-kind="audit">Audit checkpoint</button><button type="button" data-kind="stop">Stop workflow</button></div></div><div class="om-auto-line"></div><div class="om-auto-end">END</div>
+              </div></div></div><div class="om-auto-minimap"><strong>Workflow overview</strong><div id="autoMinimapNodes" aria-hidden="true"></div></div><div class="om-auto-canvas-hint">Scroll to navigate · Use the zoom controls to adjust the view</div></div>
+          </div>
+          <div class="om-auto-view" data-auto-view="settings" hidden><div class="om-auto-content-panel"><h3>Workflow settings</h3><p>Manage the workflow name, trigger and publication state. Edits to triggers and actions are available in Builder.</p><p><strong>Current state:</strong> <span id="autoSettingsStatus">Draft</span></p><p>New workflows are not active until published. Publishing enables processing of matching events.</p></div></div>
+          <div class="om-auto-view" data-auto-view="enrollment" hidden><div class="om-auto-content-panel"><h3>Enrollment history</h3><p>Recorded workflow executions from the OMNIA automation engine. This is an execution history, not a separate contact enrollment service.</p><div id="autoEnrollments"></div></div></div>
+          <div class="om-auto-view" data-auto-view="logs" hidden><div class="om-auto-content-panel"><h3>Execution logs and notifications</h3><div id="autoHistory" class="backup-list">No activity loaded.</div></div></div>
+          <p id="autoFeedback" class="om-auto-feedback" role="status">Tip: use {{title}}, {{account}}, {{error}} or {{var.name}} in any text to insert event details.</p>
+        </main>
+      </div>
+    </section>
+    <section id="publishing" class="tab">
+      <div class="page-hero pub-hero">
+        <div class="page-hero-icon"><svg class="i"><use href="#i-send"/></svg></div>
+        <div class="page-hero-copy"><div class="eyebrow">PUBLISHING</div><h2>Publish your videos</h2><p>Connect a channel once. Then pick a finished video, write the caption, and post it now or schedule it. Nothing is uploaded until you approve it.</p></div>
+        <div class="pub-status" id="pubStatus" role="status" aria-live="polite"><strong>Loading…</strong><small></small></div>
+      </div>
+
+      <!-- 1 · Channels: open until a channel is connected, then folds into a one-line summary -->
+      <details class="panel pub-step connect-panel" id="publishConnectPanel" open>
+        <summary class="pub-step-head">
+          <span class="pub-num">1</span>
+          <div class="pub-step-title"><h3>Channels</h3><small id="pubChannelsSummary">Connect where you want to post.</small></div>
+          <div id="pubChannelChips" class="pub-chips"></div>
+          <span class="pub-manage"><span class="when-closed">Manage</span><span class="when-open">Done</span></span>
+        </summary>
+        <div class="pub-step-body">
+          <label class="pub-client" id="connectClientWrap">Connect for client<input id="connectClient" maxlength="100" value="default" placeholder="default" list="connectClientList"><datalist id="connectClientList"></datalist></label>
+          <div class="connect-grid">
+            <div class="connect-card" id="connectYouTubeCard">
+              <div class="connect-card-head"><span class="platform-mark pm-youtube"><svg class="i"><use href="#i-play"/></svg></span><div><strong>YouTube</strong><small id="connectYouTubeState">Sign in with Google</small></div></div>
+              <details id="connectGoogleSetup" class="pub-howto">
+                <summary>One-time Google setup (about 3 minutes)</summary>
+                <ol class="connect-steps"><li>Open <a href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank" rel="noopener">YouTube Data API v3</a> and click <b>Enable</b>.</li>
+                  <li>In <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener">Credentials</a> create an <b>OAuth client ID</b> → <b>Web application</b> and add this redirect URI (click to copy):<code id="connectRedirectUri" class="copyable" title="Click to copy"></code></li>
+                  <li>Paste the client ID and secret here.</li></ol>
+                <label>Client ID<input id="connectGoogleId" autocomplete="off" placeholder="1234-abc.apps.googleusercontent.com"></label>
+                <label>Client secret<input id="connectGoogleSecret" type="password" autocomplete="off" placeholder="GOCSPX-…"></label>
+                <button type="button" id="connectGoogleSave" class="ghost">Save and continue</button>
+              </details>
+              <button type="button" id="connectYouTube" class="primary"><svg class="i"><use href="#i-play"/></svg> Connect YouTube</button>
+              <div class="card-checks" data-platforms="youtube"></div>
+            </div>
+            <div class="connect-card" id="connectMetaCard">
+              <div class="connect-card-head"><span class="platform-mark pm-facebook"><svg class="i"><use href="#i-flag"/></svg></span><span class="platform-mark pm-instagram"><svg class="i"><use href="#i-camera"/></svg></span><div><strong>Facebook &amp; Instagram</strong><small id="connectMetaState">Finds your Pages and linked Instagram accounts</small></div></div>
+              <details class="pub-howto" id="connectMetaHowto"><summary>Where do I get the token?</summary>
+                <ol class="connect-steps"><li>Open <a href="https://developers.facebook.com/tools/explorer/" target="_blank" rel="noopener">Meta Graph API Explorer</a> and pick your app.</li><li>Add <code>pages_show_list</code>, <code>pages_manage_posts</code>, <code>pages_read_engagement</code>, <code>instagram_basic</code>, <code>instagram_content_publish</code>.</li><li>Click <b>Generate Access Token</b> and paste it below.</li></ol></details>
+              <label>Access token<input id="connectMetaToken" type="password" autocomplete="off" placeholder="EAAB…"></label>
+              <button type="button" id="connectMetaFind" class="primary"><svg class="i"><use href="#i-refresh"/></svg> Find my Pages</button>
+              <div id="connectMetaResults" class="connect-results"></div>
+              <div class="card-checks" data-platforms="facebook instagram"></div>
+            </div>
+            <div class="connect-card">
+              <div class="connect-card-head"><span class="platform-mark pm-tiktok"><svg class="i"><use href="#i-note"/></svg></span><div><strong>TikTok or other</strong><small>Paste a token you already have</small></div></div>
+              <p class="muted small">TikTok videos arrive in your TikTok inbox for you to finish posting.</p>
+              <button type="button" id="connectManual" class="ghost"><svg class="i"><use href="#i-pen"/></svg> Add with a token</button>
+              <div class="card-checks" data-platforms="tiktok"></div>
+            </div>
+          </div>
+          <p id="connectMessage" class="muted small" role="status" aria-live="polite"></p>
+
+          <div id="publishAccountList" class="account-list"></div>
+
+          <details class="pub-manual" id="publishAccountsPanel">
+            <summary><svg class="i"><use href="#i-key"/></svg> Add or edit a channel with a token</summary>
+            <div class="accounts-layout">
+              <form id="publishAccountForm" class="form-grid">
+                <label>Platform<select id="publishAccountPlatform"><option value="youtube">YouTube</option><option value="facebook">Facebook Page</option><option value="instagram">Instagram professional</option><option value="tiktok">TikTok (inbox)</option></select></label>
+                <label>Name<input id="publishAccountLabel" maxlength="120" placeholder="Acme main channel"></label>
+                <label>Channel / Page / Instagram ID<input id="publishAccountTarget" maxlength="100" placeholder="UC… or numeric ID"></label>
+                <label>Client<input id="publishAccountClient" required maxlength="100" placeholder="default" value="default"></label>
+                <label class="span-2">Access token <small class="muted">(kept on this server; leave empty to keep the current one)</small><input id="publishAccountSecret" type="password" autocomplete="off" maxlength="4096" placeholder="Paste the access token"></label>
+                <details class="span-2 advanced-inline"><summary>Advanced</summary>
+                  <label>Account ID <small class="muted">(auto if empty)</small><input id="publishAccountId" pattern="[a-zA-Z0-9_\-]{0,60}" placeholder="acme-youtube"></label>
+                  <label>Token variable <small class="muted">(.env name, optional)</small><input id="publishAccountToken" placeholder="OMNIA_SOCIAL_TOKEN_ACME_YOUTUBE" pattern="(OMNIA_SOCIAL_TOKEN_[A-Z0-9_]{1,80})?"></label>
+                  <div class="env-hint" id="publishEnvHint"></div>
+                </details>
+                <div class="span-2 form-actions"><button type="submit" class="primary"><svg class="i"><use href="#i-check"/></svg> Save channel</button></div>
+              </form>
+              <div class="setup-guide" id="publishSetupGuide"></div>
+            </div>
+          </details>
+        </div>
+      </details>
+
+      <!-- 2 · New post -->
+      <div class="publish-layout">
+        <div class="panel pub-step" id="publishComposer">
+          <div class="pub-step-head static"><span class="pub-num">2</span><div class="pub-step-title"><h3>New post</h3><small id="publishAccounts" aria-live="polite">Loading…</small></div></div>
+          <form id="publishDraft" class="form-grid">
+            <label class="span-2">Video or image<span class="input-row"><select id="publishMedia" required><option value="">Select media</option></select><label class="file-btn" title="Upload a new image or video"><svg class="i"><use href="#i-upload"/></svg> Upload<input id="publishFile" type="file" accept="image/jpeg,image/png,video/mp4,video/quicktime,video/webm" hidden></label></span></label>
+            <label class="span-2" id="publishClientWrap" hidden>Client<select id="publishClient"></select></label>
+            <fieldset id="publishDestinations" class="span-2 dest-grid"><legend>Post to</legend></fieldset>
+            <label class="span-2">Title <small class="muted" id="publishTitleHint">(required for YouTube)</small><input id="publishTitle" maxlength="100"><span class="counter" data-count-for="publishTitle"></span></label>
+            <label class="span-2">Caption / description<textarea id="publishCaption" rows="4" maxlength="60000"></textarea><span class="counter" data-count-for="publishCaption"></span></label>
+            <label id="publishPrivacyWrap" hidden>YouTube visibility<select id="publishPrivacy"><option value="private">Private</option><option value="unlisted">Unlisted</option><option value="public">Public</option></select></label>
+            <label id="publishKidsWrap" hidden>YouTube audience<select id="publishKids"><option value="">Choose…</option><option value="no">Not made for kids</option><option value="yes">Made for kids</option></select></label>
+            <div class="span-2 pub-when">
+              <span class="pub-when-label">When</span>
+              <div class="seg-tabs" role="radiogroup" aria-label="When to post" id="publishWhen">
+                <button type="button" data-when="now" class="on" role="radio" aria-checked="true">Now</button>
+                <button type="button" data-when="schedule" role="radio" aria-checked="false">Schedule</button>
+              </div>
+              <input id="publishDue" type="datetime-local" aria-label="Scheduled time (your local time)" hidden>
+              <input id="publishTrigger" type="hidden" value="manual">
+            </div>
+            <div class="span-2 pub-needs" id="publishPreflight" aria-live="polite"></div>
+            <label class="span-2 publishing-consent"><input id="publishApproveNow" type="checkbox"> I checked the video, channels, title, caption and time, and I approve uploading it.</label>
+            <div class="span-2 form-actions">
+              <button type="button" class="ghost" id="publishSaveDraft"><svg class="i"><use href="#i-pen"/></svg> Save draft</button>
+              <button type="submit" class="primary" id="publishSubmit"><svg class="i"><use href="#i-send"/></svg> <span>Publish now</span></button>
+            </div>
+          </form>
+        </div>
+        <aside class="panel side-panel">
+          <h3><svg class="i"><use href="#i-eye"/></svg> Preview</h3>
+          <div class="composer-preview"><div class="composer-preview-top"><strong id="publishPreviewPlatform">Pick a channel</strong><small id="publishPreviewTrigger">Posts now</small></div><div class="composer-preview-media" id="publishPreviewMedia">Select a video to preview its name</div><div class="composer-preview-content"><strong id="publishPreviewTitle">Your post title</strong><p id="publishPreviewCaption">Your caption will appear here.</p></div></div>
+          <div id="publishLimits" class="limit-list"><div class="empty-mini">Tick a channel to see its limits.</div></div>
+        </aside>
+      </div>
+
+      <!-- 3 · Your posts (queue + calendar; counts are computed from the same data) -->
+      <div class="panel pub-step" id="publishPlannerPanel">
+        <div class="pub-step-head static"><span class="pub-num">3</span><div class="pub-step-title"><h3>Your posts</h3><small id="publishMessage" role="status" aria-live="polite"></small></div>
+          <div class="pub-queue-tools">
+            <div class="chip-filter" id="publishFilter" role="group" aria-label="Filter posts"><button type="button" data-filter="all" class="on">All</button><button type="button" data-filter="draft">Drafts</button><button type="button" data-filter="scheduled">Scheduled</button><button type="button" data-filter="done">Posted</button><button type="button" data-filter="problem">Needs attention</button></div>
+            <div class="chip-filter" role="group" aria-label="View"><button id="publishPlannerList" type="button" class="on">List</button><button id="publishPlannerCalendar" type="button">Calendar</button></div>
+            <button id="publishRefresh" type="button" class="ghost icon-only" title="Refresh" aria-label="Refresh"><svg class="i"><use href="#i-refresh"/></svg></button>
+          </div>
+        </div>
+        <div id="publishPlannerEvents" class="queue" hidden></div>
+        <div id="publishQueue" class="queue"></div>
+      </div>
+
+      <details class="panel pub-advanced">
+        <summary><svg class="i"><use href="#i-sliders"/></svg> Automatic uploads for Automation workflows</summary>
+        <div class="pub-advanced-body">
+          <label class="switch"><input id="publishAutomation" type="checkbox"><span></span></label>
+          <div><strong>Auto-upload approved workflow posts</strong><small id="publishAutomationStatus" class="muted" role="status">Automation is OFF until enabled.</small>
+          <p class="muted small">Posts you publish or schedule on this page don't need this. It only lets drafts made by Automation workflows upload on their own once you approve them.</p></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- ============================== LAUNCH CENTER ============================== -->
+    <section id="launch" class="tab">
+      <div class="page-hero">
+        <div class="page-hero-icon"><svg class="i"><use href="#i-rocket"/></svg></div>
+        <div class="page-hero-copy"><div class="eyebrow">DOMAIN &amp; WEB SERVER</div><h2>Launch Center</h2><p>Put OMNIA IQ on your own domain with automatic HTTPS from Caddy. Use the one-click setup, or open the advanced steps for full control.</p></div>
+        <div class="state-card"><small>Launch state</small><strong id="launchStatePill" class="state-pill">NOT CONFIGURED</strong></div>
+      </div>
+
+      <div class="hosting-overview" aria-label="Hosting overview">
+        <div class="host-stat"><small>Site health</small><strong id="hostHealth">Not configured</strong></div>
+        <div class="host-stat"><small>Access</small><strong id="hostAccess">Private</strong></div>
+        <div class="host-stat"><small>HTTPS</small><strong id="hostHttps">Not enabled</strong></div>
+        <div class="host-stat"><small>Release</small><strong id="hostRelease">None</strong></div>
+      </div>
+      <div class="panel golive" id="goLivePanel">
+        <div class="golive-copy">
+          <div class="eyebrow">QUICK SETUP</div>
+          <h3><svg class="i"><use href="#i-rocket"/></svg> Go live in one click</h3>
+          <p class="muted small">Enter your domain. OMNIA will create an access key if you don't have one, install Caddy (the official build, checksum-checked), start HTTPS and run the launch checks. Before you click, point your domain's <b>A record</b> at this computer's public IP and forward router ports <b>80</b> and <b>443</b> to this computer.</p>
+        </div>
+        <form id="goLiveForm" class="golive-form">
+          <label>Domain<input id="goLiveDomain" placeholder="app.yourdomain.com" required autocomplete="off"></label>
+          <label>Email for certificate notices <small class="muted">(optional)</small><input id="goLiveEmail" type="email" placeholder="you@example.com" autocomplete="email"></label>
+          <button class="primary" id="goLiveButton"><svg class="i"><use href="#i-globe"/></svg> Go live</button>
+        </form>
+        <ol id="goLiveSteps" class="golive-steps" hidden></ol>
+        <div id="goLiveKey" class="golive-key" hidden></div>
+      </div>
+
+      <div class="launch-layout" id="launchReadiness">
+        <div class="panel">
+          <div class="panel-title"><div><h3><svg class="i"><use href="#i-shield"/></svg> Host readiness</h3><p class="muted small" id="launchPreflightSummary">Checking what this computer can do…</p></div>
+            <div class="btn-row"><button type="button" id="launchDetectIp" class="ghost"><svg class="i"><use href="#i-globe"/></svg> Detect public IP</button><button type="button" id="launchRecheck" class="ghost"><svg class="i"><use href="#i-refresh"/></svg> Re-check</button></div></div>
+          <ul id="launchPreflight" class="check-list"><li class="skeleton">Running preflight…</li></ul>
+        </div>
+        <div class="panel">
+          <h3><svg class="i"><use href="#i-target"/></svg> Choose a launch path</h3>
+          <div class="path-grid" id="launchPaths" role="radiogroup" aria-label="Launch path">
+            <button type="button" class="path-card" data-path="local" role="radio"><svg class="i"><use href="#i-lock"/></svg><strong>Private</strong><small>Only this computer. Nothing exposed. Works now.</small><em class="path-badge"></em></button>
+            <button type="button" class="path-card" data-path="public" role="radio"><svg class="i"><use href="#i-globe"/></svg><strong>Public · your domain</strong><small>Caddy issues HTTPS. Needs ports 80/443 forwarded and an access key.</small><em class="path-badge"></em></button>
+            <button type="button" class="path-card" data-path="tunnel" role="radio"><svg class="i"><use href="#i-cloud"/></svg><strong>Public · Cloudflare Tunnel</strong><small>No port forwarding. Best behind a home router or carrier NAT.</small><em class="path-badge"></em></button>
+          </div>
+          <div id="launchTunnelGuide" class="guide-card" hidden></div>
+        </div>
+      </div>
+
+      <details class="manual-steps" id="launchManual"><summary><svg class="i"><use href="#i-sliders"/></svg> Advanced: step-by-step launch, DNS automation &amp; Cloudflare Tunnel</summary>
+      <ol class="pipeline" id="launchPipeline" aria-label="Launch progress">
+        <li data-step="configure"><span><svg class="i"><use href="#i-sliders"/></svg></span><b>Configure</b></li>
+        <li data-step="runtime"><span><svg class="i"><use href="#i-server"/></svg></span><b>Runtime</b></li>
+        <li data-step="dns"><span><svg class="i"><use href="#i-network"/></svg></span><b>Domain</b></li>
+        <li data-step="https"><span><svg class="i"><use href="#i-lock"/></svg></span><b>HTTPS</b></li>
+        <li data-step="verify"><span><svg class="i"><use href="#i-pulse"/></svg></span><b>Verify</b></li>
+        <li data-step="live"><span><svg class="i"><use href="#i-globe"/></svg></span><b>Live</b></li>
+      </ol>
+
+      <div class="panel step-panel" data-step-panel="configure">
+        <div class="step-head"><span class="step-num">1</span><div><h3>Configure the project</h3><p class="muted small">Saved locally. Changing settings requires the server to be stopped.</p></div></div>
+        <form id="launchConfig" class="form-grid three">
+          <label>What to launch<select id="launchTargetApp"><option value="omnia">OMNIA IQ web application</option><option value="static">Separate static website</option></select></label>
+          <label>Project ID<input id="launchProject" value="omnia-web" required pattern="[a-zA-Z0-9_\-]{1,60}"></label>
+          <label>Environment<select id="launchEnv"><option>staging</option><option>production</option></select></label>
+          <label>Launch mode<select id="launchMode"><option value="local">Local only</option><option value="lan">LAN (static sites)</option><option value="public">Public via HTTPS proxy</option></select></label>
+          <label>Bind address<input id="launchBind" value="127.0.0.1" required></label>
+          <label>Origin port<input id="launchPort" type="number" value="8000" min="1024" max="65535"></label>
+          <label>Domain hostname<input id="launchDomain" placeholder="app.example.com"></label>
+          <label>Registrar <small class="muted">(for your notes)</small><input id="launchRegistrar" placeholder="Namecheap, GoDaddy, Cloudflare…"></label>
+          <label>Cloudflare zone ID <small class="muted">(optional)</small><input id="launchZone" placeholder="32-character zone ID"></label>
+          <label>Certificate email <small class="muted">(optional)</small><input id="launchEmail" type="email" placeholder="you@example.com"></label>
+          <div class="span-3 form-actions"><button type="button" id="launchRefresh" class="ghost"><svg class="i"><use href="#i-refresh"/></svg> Load saved</button><button type="submit" class="primary"><svg class="i"><use href="#i-check"/></svg> Save configuration</button></div>
+        </form>
+      </div>
+
+      <div class="panel step-panel" data-step-panel="runtime">
+        <div class="step-head"><span class="step-num">2</span><div><h3>Runtime</h3><p class="muted small" id="launchAppNote">OMNIA is already running on this computer. Validate it on its origin port; no website ZIP is needed. Stopping public access leaves OMNIA itself running.</p></div></div>
+        <div id="launchStaticRelease" hidden>
+          <p class="muted small">Upload a static website ZIP with index.html at its root (max 30 MB, 5,000 files). OMNIA's private API and data stay outside the website server.</p>
+          <form id="launchUpload" class="input-row"><input id="launchZip" type="file" accept=".zip" required><button class="primary"><svg class="i"><use href="#i-upload"/></svg> Upload &amp; activate release</button></form>
+        </div>
+        <div class="launch-actions btn-row"><button data-launch-action="start" id="launchStart" class="primary">Validate OMNIA runtime</button><button data-launch-action="stop" id="launchStop">Stop public access</button><button data-launch-action="rollback" id="launchRollback" hidden>Rollback static release</button><button id="launchOpen" class="ghost"><svg class="i"><use href="#i-external"/></svg> Open local site</button></div>
+      </div>
+
+      <div class="panel step-panel" data-step-panel="dns">
+        <div class="step-head"><span class="step-num">3</span><div><h3>Domain &amp; DNS</h3><p class="muted small">Point your hostname at this server's public IP. With CLOUDFLARE_API_TOKEN and a zone ID OMNIA edits only that one record and keeps a restore snapshot; otherwise create the record at your registrar.</p></div></div>
+        <div class="dns-recipe" id="launchDnsRecipe"></div>
+        <form id="launchDNS" class="form-grid three"><label>Record type<select id="launchRecord"><option>A</option><option>AAAA</option><option>CNAME</option></select></label><label class="span-2">Public IP or target hostname<span class="input-row"><input id="launchTarget" required placeholder="203.0.113.10"><button type="button" id="launchUseIp" class="ghost" title="Use the detected public IP">Use detected IP</button></span></label>
+          <div class="span-3 form-actions"><button type="button" data-launch-action="dns-restore" class="ghost">Restore DNS snapshot</button><button class="primary"><svg class="i"><use href="#i-network"/></svg> Apply DNS record via Cloudflare</button></div></form>
+      </div>
+
+      <div class="panel step-panel" data-step-panel="https">
+        <div class="step-head"><span class="step-num">4</span><div><h3>HTTPS proxy</h3><p class="muted small">Caddy obtains and renews the certificate automatically. Public OMNIA requires OMNIA_ACCESS_KEY; launch controls stay blocked from the internet.</p></div></div>
+        <div class="launch-actions btn-row"><button data-launch-action="proxy-start" class="primary"><svg class="i"><use href="#i-lock"/></svg> Start HTTPS proxy</button><button data-launch-action="proxy-stop">Stop HTTPS proxy</button><button id="launchCaddy" class="ghost"><svg class="i"><use href="#i-download"/></svg> Download Caddyfile</button></div>
+      </div>
+
+      <div class="panel step-panel" data-step-panel="verify">
+        <div class="step-head"><span class="step-num">5</span><div><h3>Verify &amp; confirm</h3><p class="muted small">Verify runs origin, DNS (two public resolvers), HTTPS, asset and access-protection checks. A computer can't prove it is reachable from outside, so LIVE needs your confirmation from another network.</p></div></div>
+        <div class="launch-actions btn-row"><button data-launch-action="verify" class="primary"><svg class="i"><use href="#i-pulse"/></svg> Run verification</button></div>
+        <div id="launchChecks" class="check-grid"></div>
+        <form id="launchAttest" class="form-grid" aria-labelledby="launchAttestTitle">
+          <h4 id="launchAttestTitle" class="span-2">Confirm LIVE from another network</h4>
+          <label class="span-2">What did you check, and from where?<textarea id="launchAttestNote" rows="2" maxlength="500" placeholder="Opened https://app.example.com on my phone over mobile data; padlock valid and the OMNIA sign-in appeared."></textarea></label>
+          <div class="span-2 form-actions"><button type="submit" class="primary"><svg class="i"><use href="#i-globe"/></svg> Confirm LIVE</button></div>
+        </form>
+      </div>
+
+      </details>
+
+      <details class="panel"><summary><svg class="i"><use href="#i-server"/></svg> Diagnostics &amp; logs</summary><pre id="launchStatus" aria-live="polite">Save or load a project to begin.</pre></details>
+      <details class="panel"><summary><svg class="i"><use href="#i-refresh"/></svg> Site management &amp; configuration backups</summary>
+      <div class="hosting-tools"><div><h3>Site management</h3><p class="muted small">Hosting-style overview and configuration recovery. Backups contain launcher settings only, not OMNIA projects, databases, or media.</p></div>
+        <div class="btn-row"><button type="button" id="hostBackup" class="ghost">Back up configuration</button><button type="button" id="hostRefreshBackups" class="ghost">Refresh snapshots</button></div>
+        <label>Restore a saved configuration <select id="hostBackupList"><option value="">No snapshots loaded</option></select></label>
+        <button type="button" id="hostRestore" class="ghost">Restore selected configuration</button>
+        <p class="muted small" id="hostBackupFeedback" aria-live="polite"></p>
+      </div>
+
+      </details>
+    </section>
 
     <section id="dashboard" class="tab">
       <div class="section-heading"><div><div class="eyebrow">PRODUCTION CONTROL</div><h2>Dashboard</h2><p>Manage active projects, production stages, artifacts, and specialist studios.</p></div></div>
       <div class="metric-grid">
-        <div class="metric"><span>Projects</span><strong id="metricProjects">0</strong></div>
-        <div class="metric"><span>Running</span><strong id="metricRunning">0</strong></div>
-        <div class="metric"><span>Completed</span><strong id="metricCompleted">0</strong></div>
-        <div class="metric"><span>Artifacts</span><strong id="metricArtifacts">0</strong></div>
+        <div class="metric"><svg class="i metric-icon"><use href="#i-layers"/></svg><span>Projects</span><strong id="metricProjects">0</strong></div>
+        <div class="metric"><svg class="i metric-icon"><use href="#i-pulse"/></svg><span>Running</span><strong id="metricRunning">0</strong></div>
+        <div class="metric"><svg class="i metric-icon"><use href="#i-check"/></svg><span>Completed</span><strong id="metricCompleted">0</strong></div>
+        <div class="metric"><svg class="i metric-icon"><use href="#i-download"/></svg><span>Artifacts</span><strong id="metricArtifacts">0</strong></div>
       </div>
       <div class="panel"><div class="panel-title"><h3>Recent production</h3><button type="button" data-open-projects>Open projects</button></div><div id="dashboardProjects" class="list"></div></div>
     </section>
 
-    <section id="studios" class="tab">
-      <div class="section-heading"><div><div class="eyebrow">SPECIALIST CREATION SUITE</div><h2>Studios</h2><p>Select a production specialty, then create a structured project with real downloadable output.</p></div></div>
-      <div id="studioGrid" class="studio-grid"></div>
+    <section id="studios" class="tab video-specialist-studio">
+      <div class="video-studio-hero">
+        <div class="video-studio-hero-copy">
+          <div class="video-studio-kicker"><span class="live-dot"></span> OMNIA IQ VIDEO SPECIALIST</div>
+          <h2>Video Studio</h2>
+          <p>One production workspace that turns a brief and your media into a finished video — written for the ear, cut to the voice, and checked against professional editing rules before you publish.</p>
+          <div class="video-studio-actions">
+            <button id="startVideoProject" class="video-primary-cta" type="button"><svg class="i"><use href="#i-play"/></svg> Start a video project</button>
+            <button id="openVideoProjects" class="video-secondary-cta" type="button">View video projects</button>
+          </div>
+          <div class="video-studio-trust">
+            <span><svg class="i"><use href="#i-mic"/></svg> Delivery brief</span><span><svg class="i"><use href="#i-list"/></svg> Spoken-reading review</span><span><svg class="i"><use href="#i-scissors"/></svg> Edit checklist</span><span><svg class="i"><use href="#i-download"/></svg> MP4 export</span>
+          </div>
+        </div>
+        <div class="video-studio-visual" aria-hidden="true">
+          <div class="video-preview-frame">
+            <div class="video-preview-top"><i></i><i></i><i></i><b>PREVIEW</b></div>
+            <div class="video-preview-stage">
+              <div class="preview-play"><svg class="i"><use href="#i-play"/></svg></div>
+              <div class="preview-caption"><span></span><span></span></div>
+            </div>
+            <div class="video-preview-timeline"><span></span><span></span><span></span><span></span><span></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="video-workflow-head">
+        <div><div class="eyebrow">PRODUCTION SEQUENCE</div><h3>Purpose before technique</h3><p class="muted">Every project moves through the same six steps. Each step maps to a stage you can watch in the project log.</p></div>
+        <span class="video-specialist-badge">PRINCIPLES v1.0</span>
+      </div>
+      <div id="studioGrid" class="video-capability-grid seq-grid">
+        <article class="video-capability-card"><div class="capability-number">01</div><div class="capability-icon"><svg class="i"><use href="#i-target"/></svg></div><h3>Define</h3><p>Main message, audience, desired response and delivery format. OMNIA derives a delivery brief and labels every guess as an assumption.</p></article>
+        <article class="video-capability-card"><div class="capability-number">02</div><div class="capability-icon"><svg class="i"><use href="#i-pen"/></svg></div><h3>Plan</h3><p>Narration written for the ear in thought groups, with numbers, dates and names flagged for a chosen spoken reading before any voice is made.</p></article>
+        <article class="video-capability-card"><div class="capability-number">03</div><div class="capability-icon"><svg class="i"><use href="#i-image"/></svg></div><h3>Capture or generate</h3><p>Your media plus matched B-roll, music and effects. Every asset is validated and assigned a role it must serve.</p></article>
+        <article class="video-capability-card"><div class="capability-number">04</div><div class="capability-icon"><svg class="i"><use href="#i-layers"/></svg></div><h3>Assemble</h3><p>A sequence built around meaning and progression, cut to the measured voice — never to an estimate.</p></article>
+        <article class="video-capability-card"><div class="capability-number">05</div><div class="capability-icon"><svg class="i"><use href="#i-scissors"/></svg></div><h3>Refine</h3><p>Clean cuts over flashy transitions, ducked music under speech, readable captions in the safe zone.</p></article>
+        <article class="video-capability-card video-capability-card-accent"><div class="capability-number">06</div><div class="capability-icon"><svg class="i"><use href="#i-check"/></svg></div><h3>Finish &amp; verify</h3><p>The exported file is measured and scored HOOK → CTA. What code can't judge is handed to you, not auto-passed.</p></article>
+      </div>
+
+      <div class="panel principles-panel">
+        <div class="panel-title"><div><h3><svg class="i"><use href="#i-book"/></svg> Production principles</h3><p class="muted small" id="principlesMeta">The working rules OMNIA applies to every script, voice and edit.</p></div></div>
+        <div class="seg-tabs" role="tablist" id="principlesTabs">
+          <button type="button" role="tab" data-ptab="checklist" class="on">HOOK → CTA</button>
+          <button type="button" role="tab" data-ptab="rules">Editing rules</button>
+          <button type="button" role="tab" data-ptab="voice">Voice-over</button>
+          <button type="button" role="tab" data-ptab="voices">Voice qualification</button>
+          <button type="button" role="tab" data-ptab="glossary">Glossary</button>
+        </div>
+        <div id="principlesBody" class="principles-body"><div class="skeleton">Loading principles…</div></div>
+      </div>
     </section>
 
     <section id="files" class="tab">
       <div class="section-heading"><div><div class="eyebrow">KNOWLEDGE</div><h2>Files</h2></div></div>
-      <label class="dropzone"><div class="upload-icon">＋</div><strong>Upload a file</strong><span>Attach documents for analysis and conversation</span><input id="fileUpload" type="file" hidden></label>
+      <label class="dropzone"><div class="upload-icon"><svg class="i"><use href="#i-upload"/></svg></div><strong>Upload a file</strong><span>Attach documents for analysis and conversation</span><input id="fileUpload" type="file" hidden></label>
+      <div class="runtime-actions" style="margin:12px 0;gap:8px;flex-wrap:wrap">
+        <input id="fileSearch" aria-label="Search library" placeholder="Search files or tags" style="flex:2;min-width:160px">
+        <input id="fileFolder" aria-label="Filter folder" placeholder="Folder filter" style="flex:1;min-width:120px">
+        <label><input type="checkbox" id="fileFavorites"> Favorites</label>
+        <label><input type="checkbox" id="fileTrash"> Trash</label>
+        <button id="refreshFiles" type="button">Refresh</button>
+        <button id="emptyTrash" type="button" class="danger" hidden>Empty trash</button>
+      </div>
+      <div id="fileStorage" class="file-storage" role="status" aria-live="polite"></div>
       <div id="fileList" class="list"></div>
     </section>
 
     <section id="tasks" class="tab">
-      <div class="section-heading"><div><div class="eyebrow">AUTONOMOUS WORKSPACE</div><h2>Projects</h2><p>Describe the outcome. OMNIA IQ will plan, produce, verify, and report the work.</p></div></div>
-      <form id="taskForm" class="task-builder">
-        <div class="project-fields"><input id="taskInput" placeholder="Project name or desired outcome…" required><select id="projectType"><option value="auto">Auto-detect studio</option><option value="website">Website Studio</option><option value="software">Software Studio</option><option value="video">Video Studio</option><option value="automation">Automation Studio</option><option value="marketing">Marketing Studio</option><option value="document">Document Studio</option></select></div>
-        <textarea id="taskInstructions" placeholder="Requirements, constraints, expected deliverable, and definition of done…"></textarea>
-        <button>Create project</button>
+      <div class="section-heading video-projects-heading"><div><div class="eyebrow">VIDEO PRODUCTION WORKSPACE</div><h2>Video Projects</h2><p>Describe the video you want. OMNIA IQ will interpret the brief, plan the production, render the video, verify the output, and package the artifacts.</p></div><span class="video-specialist-badge">VIDEO SPECIALIST</span></div>
+      <div id="videoReadiness" class="readiness-notice" role="status" aria-live="polite" hidden></div>
+        <form id="taskForm" class="task-builder video-task-builder">
+        <input id="projectType" type="hidden" value="video">
+        <div class="video-presets" role="group" aria-label="Quick presets"><span>Quick start:</span>
+          <button type="button" data-preset="tiktok|promo_ad|0.5">30s TikTok ad</button>
+          <button type="button" data-preset="instagram_reels|storytelling|1">60s Reel story</button>
+          <button type="button" data-preset="youtube_shorts|listicle|1">YouTube Short top-5</button>
+          <button type="button" data-preset="youtube|explainer|3">3-min YouTube explainer</button>
+          <button type="button" data-preset="youtube|documentary|10">10-min documentary</button>
+          <button type="button" data-preset="website|product_demo|1">Product demo</button>
+        </div>
+        <div class="video-project-field-label"><span>PROJECT</span><small>Give the video a clear working name.</small></div>
+        <div class="project-fields video-project-fields"><input id="taskInput" placeholder="e.g. chess grandmaster documentary (a few words is enough)" required><div class="locked-studio-field"><svg class="i"><use href="#i-film"/></svg><div><strong>Video Studio</strong><small>Specialist mode locked</small></div></div></div>
+        <div class="video-project-field-label"><span>NARRATION LANGUAGE</span><small>OMNIA writes the script and picks a matching voice in this language automatically - mentioning a language (and region, e.g. "Mexican Spanish") in the brief works just as well.</small><select id="narrationLanguage" class="assist-platform-select" title="The narration script and voice will both be generated in this language.">
+          <option value="">English (default)</option>
+          <option value="Spanish">Spanish</option>
+          <option value="French">French</option>
+          <option value="German">German</option>
+          <option value="Italian">Italian</option>
+          <option value="Portuguese">Portuguese</option>
+          <option value="Dutch">Dutch</option>
+          <option value="Russian">Russian</option>
+          <option value="Polish">Polish</option>
+          <option value="Turkish">Turkish</option>
+          <option value="Arabic">Arabic</option>
+          <option value="Hindi">Hindi</option>
+          <option value="Chinese">Chinese</option>
+          <option value="Japanese">Japanese</option>
+          <option value="Korean">Korean</option>
+          <option value="Vietnamese">Vietnamese</option>
+          <option value="Swahili">Swahili</option>
+        </select></div>
+        <div class="video-project-field-label"><span>VIDEO TYPE &amp; LENGTH</span><small>Shapes the structure OMNIA writes. Longer videos are planned as chapters so they stay clear and easy to follow.</small><select id="videoType" class="assist-platform-select" aria-label="Video type" title="The kind of video, which decides how the brief is structured.">
+          <option value="general">Any type of video</option>
+          <option value="documentary">Documentary</option>
+          <option value="explainer">Explainer / educational</option>
+          <option value="tutorial">Tutorial / how-to</option>
+          <option value="product_demo">Product demo</option>
+          <option value="promo_ad">Promo / advertisement</option>
+          <option value="storytelling">Story / narrative</option>
+          <option value="news_recap">News / recap</option>
+          <option value="listicle">List / top-N</option>
+          <option value="threed_model">3D model / product visualization</option>
+        </select><select id="videoLength" class="assist-platform-select" aria-label="Target length" title="Written into the brief as the target runtime.">
+          <option value="">Let OMNIA decide</option>
+          <option value="0.5">30 seconds</option>
+          <option value="1">1 minute</option>
+          <option value="3">3 minutes</option>
+          <option value="5">5 minutes</option>
+          <option value="10">10 minutes</option>
+        </select></div>
+        <div class="video-project-field-label"><span>CREATIVE BRIEF</span><small>Say who it is for, what they should understand or do, the tone, and any names or numbers that must be read a certain way.</small><select id="assistPlatform" class="assist-platform-select" title="Which platform is this video for? OMNIA researches current trending angles for this platform before writing the brief.">
+          <option value="general">Any short-form platform</option>
+          <option value="tiktok">TikTok</option>
+          <option value="instagram_reels">Instagram Reels</option>
+          <option value="youtube_shorts">YouTube Shorts</option>
+          <option value="youtube">YouTube (standard video)</option>
+          <option value="facebook">Facebook</option>
+          <option value="linkedin">LinkedIn</option>
+          <option value="x_twitter">X (Twitter)</option>
+          <option value="snapchat">Snapchat Spotlight</option>
+          <option value="pinterest">Pinterest</option>
+          <option value="website">Website / landing page</option>
+          <option value="presentation">Presentation / training / webinar</option>
+        </select><button type="button" id="assistPromptButton" class="assist-prompt-button"><svg class="i"><use href="#i-wand"/></svg> Expand with OMNIA</button></div>
+        <textarea id="taskInstructions" placeholder="Describe exactly how the video should look, sound, move, and feel… or just type a few keywords above and click “Expand with OMNIA”."></textarea>
+        <div class="director-panel" id="directorPanel">
+          <div class="video-project-field-label"><span>CINEMATIC DIRECTOR</span><small>Direct source footage with reusable shot, pacing and caption principles. This does not synthesize a new actor.</small></div>
+          <div class="director-grid">
+            <label>Editing style<select id="directorStyle" class="assist-platform-select"><option value="">Automatic (existing OMNIA behavior)</option><option value="presenter_branded">Branded Presenter</option><option value="social_punchy">Social Punch Cuts</option><option value="cinematic_story">Cinematic Story</option></select></label>
+            <label>Brand (optional)<input id="directorBrand" maxlength="160" placeholder="Brand name from your assets"></label>
+            <label>Call to action (optional)<input id="directorCTA" maxlength="280" placeholder="Use only confirmed contact details"></label>
+            <label class="director-caption"><input id="directorCaptions" type="checkbox" checked> Include speech-matched captions</label>
+          </div>
+          <button type="button" id="directorPreview" class="assist-prompt-button">Preview direction</button>
+          <div id="directorPreviewResult" class="director-preview" hidden></div>
+        </div>
+        <div id="assistTrendBox" class="assist-trend-box hidden"></div>
+        <div id="assistPromptSources" class="message-sources assist-sources hidden"></div>
+        <div id="videoMediaBin" class="video-media-bin hidden">
+          <div class="media-bin-head"><div><strong>OMNIA IQ Media Studio</strong><small>Drop or add images, video, music, SFX, and reference audio. Each asset is validated, inspected, assigned a practical role, and linked directly to this video project.</small></div><label class="media-add"><svg class="i"><use href="#i-plus"/></svg> Add media<input id="videoMediaUpload" type="file" accept="image/*,video/*,audio/*" multiple hidden></label></div>
+          <div id="videoMediaList" class="media-bin-list"><span class="media-empty">No client media added yet.</span></div>
+        </div>
+        <label class="review-option"><input type="checkbox" id="reviewBeforeRender"> Review the script before rendering <small>(OMNIA writes the narration, shows the delivery brief and every number, date or acronym that needs a chosen reading, then waits for you to approve, edit or reject. Nothing renders until you decide.)</small></label>
+        <label class="review-option"><input type="checkbox" id="buildImmediately" checked> Start building right away <small>(untick to only save the project and build it later)</small></label>
+        <button class="create-video-project-button"><svg class="i"><use href="#i-play"/></svg> <span id="createVideoLabel">Create &amp; build video</span></button>
       </form>
       <div id="taskList" class="list"></div>
     </section>
@@ -95,28 +686,131 @@
       <div class="section-heading"><div><div class="eyebrow">LONG-TERM INTELLIGENCE</div><h2>Memory</h2><p id="memoryStats">Loading memory…</p></div></div>
       <form id="memoryForm" class="task-builder">
         <textarea id="memoryInput" placeholder="Teach OMNIA IQ a durable fact, preference, procedure, or project rule…" required></textarea>
+        <label for="memoryKind">Type</label>
+        <select id="memoryKind" class="assist-platform-select" aria-describedby="memoryKindHelp">
+          <option value="knowledge">Fact or preference - about me or my projects</option>
+          <option value="principle">Creative principle - applied to every brief OMNIA writes</option>
+        </select>
+        <small id="memoryKindHelp">A creative principle is general craft that helps any video, in one or two sentences (up to 280 characters), for example "Open on one specific claim rather than a vague scene-setter." OMNIA also learns these on its own from finished videos; you can delete any of them below.</small>
         <button>Save memory</button>
       </form>
+      <label class="review-option" id="learningToggleRow"><input type="checkbox" id="learningToggle"> Let OMNIA learn creative principles from my finished videos <small id="learningStatus"></small></label>
+      <input id="memorySearch" placeholder="Search stored memories…" aria-label="Search memories" autocomplete="off">
       <div id="memoryList" class="list"></div>
     </section>
 
     <section id="settings" class="tab">
-      <div class="section-heading"><div><div class="eyebrow">SYSTEM CAPABILITIES</div><h2>Settings</h2><p>Cloud production runtimes used to create real project files.</p></div></div>
+      <div class="section-heading"><div><div class="eyebrow">SYSTEM CAPABILITIES</div><h2>Settings</h2><p>Manage local production runtimes used to create real project files.</p></div></div>
+      <div class="panel ollama-lib" id="ollamaLibrary">
+        <div class="panel-title"><div><h3><svg class="i"><use href="#i-server"/></svg> Ollama models</h3><p class="muted small" id="ollamaSummary">Checking Ollama…</p></div><button type="button" id="ollamaRefresh">Refresh</button></div>
+        <h4 class="ollama-h">Installed — all are available to OMNIA automatically</h4>
+        <div id="ollamaInstalled" class="ollama-grid"></div>
+        <h4 class="ollama-h">Free agentic models to add</h4>
+        <p class="muted small">Models with <b>tools</b> can act as agents (search, files, browser). Sizes are approximate downloads; pick ones that fit your RAM. <b>Cloud</b> models run on Ollama's free cloud after you run <code>ollama signin</code> once on this computer.</p>
+        <div id="ollamaCatalog" class="ollama-grid"></div>
+        <form id="ollamaCustom" class="ollama-custom"><input id="ollamaTag" placeholder="Any model from ollama.com/library, e.g. qwen3:8b or hf.co/user/repo:Q4_K_M" autocomplete="off" spellcheck="false"><button class="primary" type="submit"><svg class="i"><use href="#i-download"/></svg> Pull model</button></form>
+      </div>
+      <div class="panel agent-settings" id="agentSettings">
+        <div class="panel-title"><div><h3><svg class="i"><use href="#i-wand"/></svg> Assistant agent &amp; browser extension</h3><p class="muted small">Agent mode lets Chat plan and use tools: web search, reading pages, a per-conversation file workspace, memory and your Chrome browser. Browser actions that change anything always wait for your approval.</p></div><button type="button" id="agentSettingsRefresh">Refresh</button></div>
+        <div class="agent-settings-grid">
+          <div class="runtime-card" id="agentBrowserCard"><strong><span class="runtime-dot"></span>Chrome extension</strong><small id="agentBrowserDetail">Checking…</small></div>
+          <div class="runtime-card" id="agentCodeCard"><strong><span class="runtime-dot"></span>Code execution</strong><small id="agentCodeDetail">Checking…</small></div>
+          <div class="runtime-card" id="agentToolsCard"><strong><span class="runtime-dot"></span>Tools available now</strong><small id="agentToolsDetail">Checking…</small></div>
+        </div>
+        <ol class="agent-install">
+          <li><button type="button" id="agentExtensionDownload" class="primary"><svg class="i"><use href="#i-download"/></svg> Download extension</button> and unzip it.</li>
+          <li>Open <code>chrome://extensions</code>, turn on <b>Developer mode</b>, click <b>Load unpacked</b> and pick the <code>omnia-chrome</code> folder.</li>
+          <li>Click the OMNIA icon (Alt+O), open ⚙ and enter <code id="agentServerUrl">http://127.0.0.1:8000</code> plus your access key if you use one.</li>
+        </ol>
+      </div>
+      <div class="panel llm-config-panel">
+        <div class="panel-title"><div><h3>Cloud LLM Integrations</h3><p id="llmConfigSummary">Configure and test each cloud model directly, using the same local .env flow as Pexels.</p></div><button id="refreshLlmConfig" type="button">Refresh</button></div>
+        <div id="llmConfigGrid" class="llm-config-grid"></div>
+        <small class="runtime-note">Credentials are stored locally in the project <code>.env</code>. Saved API keys/tokens are masked and are never returned to the browser.</small>
+      </div>
+
       <div class="panel media-runtime-panel">
         <div class="panel-title"><div><h3>Production Runtimes</h3><p id="mediaSummary">Checking video and speech engines…</p></div><button id="refreshMedia" type="button">Refresh</button></div>
         <div id="mediaRuntime" class="runtime-grid"></div>
+        <div class="production-capabilities"><strong>Professional Video Production Suite</strong><div id="productionFeatures" class="feature-chip-grid"></div></div>
         <div class="runtime-actions">
           <button id="installFfmpeg" type="button">Install FFmpeg automatically</button>
-          <button id="installSpeech" type="button">Install Piper speech engine</button>
+          <button id="installSpeech" type="button">Install Free Speech</button>
           <button id="testSpeech" type="button">Test speech</button>
-          <small>Cloud videos are rendered with bundled FFmpeg and on-screen captions. Voice-over (Piper) is only available in the local PC version.</small>
         </div>
+        <div class="pexels-config">
+          <div class="pexels-config-copy"><strong>Free Multilingual Speech</strong><small>Four free engines with automatic fallback: Edge neural (online, 70+ languages), Google voices (online), Piper (offline neural) and this computer's own voices. No API key needed.</small></div>
+          <select id="freeSpeechProvider"><option value="auto">Automatic: best free engine, with fallback (recommended)</option><option value="edge_tts">Edge neural voices (online)</option><option value="gtts">Google voices (online)</option><option value="piper">Piper offline neural voices</option><option value="system">This computer's voices (offline)</option><option value="elevenlabs">ElevenLabs (paid key)</option></select>
+          <input id="freeSpeechLocale" value="en-US" placeholder="Voice locale (e.g. en-US, fil-PH, es-MX)">
+          <button id="listFreeVoices" type="button">Browse Native Voices</button>
+          <select id="freeSpeechVoice"><option value="">Auto-select accent-matched voice</option></select>
+          <button id="saveFreeSpeech" type="button">Save Speech Settings</button>
+          <button id="testSelectedFreeVoice" type="button">Test Selected Voice</button>
+          <div id="freeSpeechInfo" class="runtime-note"></div>
+          <div id="speechEngines" class="speech-engines"></div>
+        </div>
+        <div class="pexels-config">
+          <div class="pexels-config-copy"><strong>ElevenLabs Voice Provider</strong><small id="elevenlabsStatus">Configure your voice provider</small></div>
+          <input id="elevenlabsApiKey" type="password" autocomplete="off" placeholder="ElevenLabs API key (required on first setup)">
+          <input id="elevenlabsVoice" placeholder="Default Voice ID">
+          <input id="elevenlabsMaleVoice" placeholder="Male Voice ID (optional)">
+          <input id="elevenlabsFemaleVoice" placeholder="Female Voice ID (optional)">
+          <input id="elevenlabsModel" value="eleven_multilingual_v2" placeholder="Model ID">
+          <button id="saveElevenlabs" type="button">Save Voice Provider</button>
+          <button id="listElevenlabsVoices" type="button">List My Voices</button>
+          <div id="elevenlabsVoiceResults" class="runtime-note"></div>
+        </div>
+        <div class="pexels-config">
+          <div class="pexels-config-copy"><strong>Pexels Images</strong><small id="pexelsConfigStatus">Checking API configuration…</small></div>
+          <input id="pexelsApiKey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your Pexels API key">
+          <button id="savePexels" type="button">Save &amp; Connect</button>
+          <button id="testPexels" type="button">Test Pexels</button>
+        </div>
+        <small class="runtime-note">The key is stored locally in the project <code>.env</code> as <code>PEXELS_API_KEY</code>. It is never returned to the browser after saving.</small>
+        <div class="pexels-config">
+          <div class="pexels-config-copy"><strong>Freesound Audio</strong><small id="freesoundConfigStatus">Checking API configuration…</small></div>
+          <input id="freesoundApiKey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your Freesound API key">
+          <button id="saveFreesound" type="button">Save &amp; Connect</button>
+          <button id="testFreesound" type="button">Test Freesound</button>
+        </div>
+        <small class="runtime-note">Used for CC0-preferred background music and sound effects. The key is stored locally as <code>FREESOUND_API_KEY</code>.</small>
+        <div class="pexels-config">
+          <div class="pexels-config-copy"><strong>Web Search — Tavily (primary)</strong><small id="tavilyConfigStatus">Checking API configuration…</small></div>
+          <input id="tavilyApiKey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your Tavily API key">
+          <button id="saveTavily" type="button">Save &amp; Connect</button>
+          <button id="testTavily" type="button">Test Tavily</button>
+        </div>
+        <small class="runtime-note">Lets OMNIA IQ research video ideas and ground chat answers in current web results when "Search the web" is on. Stored locally as <code>TAVILY_API_KEY</code>. Free key: <a href="https://tavily.com" target="_blank" rel="noopener noreferrer">tavily.com</a>.</small>
+        <div class="pexels-config">
+          <div class="pexels-config-copy"><strong>Web Search — Brave (fallback)</strong><small id="braveConfigStatus">Checking API configuration…</small></div>
+          <input id="braveApiKey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your Brave Search API key">
+          <button id="saveBrave" type="button">Save &amp; Connect</button>
+          <button id="testBrave" type="button">Test Brave</button>
+        </div>
+        <small class="runtime-note">Used automatically only when Tavily is not configured. Stored locally as <code>BRAVE_SEARCH_API_KEY</code>.</small>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title"><div><h3>Data &amp; Backup</h3><p>Create a verified, point-in-time copy of your projects, conversations, and settings.</p></div><button id="refreshBackups" type="button">Refresh</button></div>
+        <div class="runtime-actions">
+          <button id="createBackup" type="button">Back up now</button>
+        </div>
+        <div id="backupList" class="backup-list"></div>
+        <small class="runtime-note">Backs up the database only (projects, conversations, memory, settings) - not uploaded media or rendered videos, which are typically much larger and individually recreatable. Every backup is independently verified before it's kept; a backup that fails verification is discarded rather than left on disk.</small>
       </div>
     </section>
   </main>
 </div>
 <div id="connectionBanner" class="connection-banner hidden">Backend connection interrupted. OMNIA IQ will retry when you reload this page.</div>
 <div id="toast" class="toast hidden"></div>
-<script src="/static/app.js?v=85.1"></script>
+<script src="/static/video_studio.js?v=88.4.0"></script>
+<script src="/static/app.js?v=88.4.0"></script>
+<script src="/static/agent_chat.js?v=88.4.0"></script>
+<script src="/static/ollama_library.js?v=88.4.0"></script>
+<script src="/static/launch.js?v=88.4.0"></script>
+<script src="/static/publishing.js?v=88.4.0"></script>
+<script src="/static/agent_studio.js?v=88.4.0"></script>
+<script src="/static/automation.js?v=88.4.0"></script>
+<script src="/static/principles.js?v=88.4.0"></script>
 </body>
 </html>

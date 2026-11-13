@@ -1,0 +1,120 @@
+(()=>{
+const get=id=>document.getElementById(id), escape=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let EVENTS={publishing:[{value:'*',label:'Any publishing event'}],tasks:[{value:'*',label:'Any project event'}],schedule:[{value:'interval',label:'Every N minutes'},{value:'daily',label:'Every day at a time'}]};
+let TEMPLATES=[],DESTINATIONS=[];
+let list=[],id=null,enabled=false,steps=[],lastNote=0;
+const FIELDS=['title','status','account','error','client_id','media_type','filename','post_id','remote_id','method','path','section','event_type','var.result','var.score'];
+const OPS=[['equals','equals'],['not_equals','does not equal'],['contains','contains'],['not_contains','does not contain'],['greater_than','greater than'],['less_than','less than'],['is_empty','is empty'],['is_not_empty','is not empty']];
+const TITLES={notify:'🔔 Notify me in OMNIA',webhook:'🌐 Send to Slack / Discord / Zapier',publish_draft:'📤 Prepare publishing draft',wait:'⏱ Wait / delay',condition:'Continue only if…',if:'IF · Yes / No branch',else:'ELSE · No branch',end_if:'END IF · Merge',set_variable:'Set variable',increment:'Increment variable',format_text:'Format text',filter:'Filter event',audit:'Audit checkpoint',stop:'Stop workflow'};
+const HELP={notify:'Shows a pop-up and saves it in Execution logs.',webhook:'Posts a message to an https:// incoming-webhook URL. Failed sends retry 3 times.',publish_draft:'Creates a draft in Publishing from the finished video. Nothing uploads until you approve it.',wait:'Pauses before the next action (survives restarts).',condition:'Stops this run when the check is false.',filter:'Stops this run when the check is false.',if:'True → YES lane, false → NO lane; both merge afterward.',set_variable:'Stores a value you can reuse as {{var.name}}.',increment:'Adds a number to a variable.',format_text:'Builds text from variables.',audit:'Writes a line into the run log.',stop:'Ends the run here.'};
+async function call(path,options={}){const r=await window.omniaApiFetch('/api/automation'+path,options,30000);let d={};try{d=await r.json()}catch{}if(!r.ok)throw Error(typeof d.detail==='string'?d.detail:'Automation request failed');return d;}
+const jsonBody=(o,method='POST')=>({method,headers:{'Content-Type':'application/json'},body:JSON.stringify(o)});
+function note(message){get('autoFeedback').textContent=message;window.omniaNotify?.(message)}
+function events(section){const select=get('autoEvent'),old=select.value;select.innerHTML=(EVENTS[section]||[{value:'*',label:'Any event'}]).map(o=>`<option value="${escape(o.value)}">${escape(o.label)}</option>`).join('');if([...select.options].some(o=>o.value===old))select.value=old;scheduleUI();}
+function scheduleUI(){const sched=get('autoSection').value==='schedule',ev=get('autoEvent').value;get('autoEveryWrap').hidden=!(sched&&ev==='interval');get('autoDailyWrap').hidden=!(sched&&ev==='daily');const w=list.find(x=>x.id===id);get('autoNextRun').textContent=w?.next_run?'Next run: '+new Date(w.next_run*1000).toLocaleString():sched?'Runs once turned on.':'';}
+function status(){get('autoState').textContent=id?(enabled?'● On':'Off (draft)'):'Unsaved';get('autoState').classList.toggle('on',enabled);get('autoSettingsStatus').textContent=get('autoState').textContent;get('autoEditorTitle').textContent=id?'Edit Workflow':'New Workflow';get('autoPublish').textContent=enabled?'Save changes':'Save & turn on';get('autoUnpublish').disabled=!id||!enabled;get('autoTest').disabled=!steps.length;}
+function fieldInput(s){return `<label>Field<input data-field="field" list="autoFieldList" value="${escape(s.field||'status')}" placeholder="status"></label>`;}
+function destPicker(s){const chosen=new Set(s.accounts||[]);if(!DESTINATIONS.length)return '<p class="om-auto-hint">No publishing destinations yet — connect one in Publishing first.</p>';return `<div class="om-auto-dests">${DESTINATIONS.map(d=>`<label><input type="checkbox" data-dest="${escape(d.id)}" ${chosen.has(d.id)?'checked':''}> ${escape(d.label)} <small class="muted">${escape(d.platform)} · ${escape(d.client_id)}${d.configured?'':' · not connected'}</small></label>`).join('')}</div>`;}
+function node(s,i){let fields='';
+if(s.type==='notify')fields=`<label>Title<input data-field="title" value="${escape(s.title||'')}" maxlength="160" placeholder="e.g. Published: {{title}}"></label><label>Message<textarea data-field="message" maxlength="2000" placeholder="Details shown in the notification">${escape(s.message||'')}</textarea></label>`;
+if(s.type==='webhook')fields=`<label>Webhook URL<input data-field="url" value="${escape(s.url||'')}" placeholder="https://hooks.slack.com/services/…"></label><label>Format<select data-field="format">${[['slack','Slack'],['discord','Discord'],['json','JSON (Zapier, Make, n8n)']].map(([v,t])=>`<option value="${v}" ${(s.format||'json')===v?'selected':''}>${t}</option>`).join('')}</select></label><label>Message<textarea data-field="message" maxlength="2000">${escape(s.message||'')}</textarea></label>`;
+if(s.type==='publish_draft')fields=`<label>Destinations</label>${destPicker(s)}<label>Title<input data-field="title" value="${escape(s.title||'{{title}}')}" maxlength="200"></label><label>Caption<textarea data-field="caption" maxlength="5000" placeholder="Caption template">${escape(s.caption||'')}</textarea></label><label>YouTube visibility<select data-field="privacy">${['private','unlisted','public'].map(v=>`<option ${s.privacy===v?'selected':''}>${v}</option>`).join('')}</select></label>`;
+if(s.type==='wait')fields=`<label>Delay<span class="input-row"><input data-field="wait_amount" type="number" min="1" value="${escape(waitAmount(s).n)}"><select data-field="wait_unit">${[['1','seconds'],['60','minutes'],['3600','hours'],['86400','days']].map(([v,t])=>`<option value="${v}" ${String(waitAmount(s).u)===v?'selected':''}>${t}</option>`).join('')}</select></span></label>`;
+if(['condition','if','filter'].includes(s.type))fields=`${fieldInput(s)}<label>Check<select data-field="operator">${OPS.map(([v,t])=>`<option value="${v}" ${s.operator===v?'selected':''}>${t}</option>`).join('')}</select></label><label>Value<input data-field="value" value="${escape(s.value||'')}" placeholder="Compare against"></label>`;
+if(['set_variable','increment'].includes(s.type))fields=`<label>Variable name<input data-field="key" value="${escape(s.key||'score')}" placeholder="score"></label><label>${s.type==='increment'?'Amount':'Value'}<input data-field="value" value="${escape(s.value??(s.type==='increment'?'1':''))}"></label>`;
+if(s.type==='format_text')fields=`<label>Output variable<input data-field="key" value="${escape(s.key||'result')}"></label><label>Text template<textarea data-field="template">${escape(s.template||'')}</textarea></label>`;
+if(s.type==='audit')fields=`<label>Audit checkpoint<textarea data-field="message">${escape(s.message||'')}</textarea></label>`;
+return `<div class="om-auto-node" data-index="${i}" data-type="${s.type}"><div class="om-auto-node-header"><span class="om-auto-chip">${String(i+2).padStart(2,'0')} · ${escape(s.type.replace('_',' ').toUpperCase())}</span><span><button type="button" data-move="up" aria-label="Move action up">↑</button><button type="button" data-move="down" aria-label="Move action down">↓</button><button type="button" data-remove="1" aria-label="Remove action">×</button></span></div><h4>${TITLES[s.type]||s.type}</h4><p>${HELP[s.type]||''}</p><div class="om-auto-fields">${fields}</div></div>`;}
+function waitAmount(s){const sec=Number(s.seconds||60);for(const u of [86400,3600,60])if(sec%u===0&&sec>=u)return{n:sec/u,u};return{n:sec,u:1};}
+function treeMarkup(){
+  let pos=0;
+  const add=(index,label='+ Add action')=>`<div class="om-tree-add"><button type="button" data-insert="${index}">${label}</button></div>`;
+  function branchBoundary(start,type){let depth=0;for(let j=start+1;j<steps.length;j++){if(steps[j].type==='if')depth++;else if(steps[j].type==='end_if'){if(depth===0)return j;depth--;}else if(steps[j].type===type&&depth===0)return j;}return steps.length;}
+  function sequence(stop=[]){
+    let html='';
+    while(pos<steps.length&&!stop.includes(steps[pos].type)){
+      const i=pos,step=steps[pos++];
+      if(step.type==='if'){
+        const yes=sequence(['else','end_if']);let no='';
+        if(pos<steps.length&&steps[pos].type==='else'){pos++;no=sequence(['end_if']);}
+        const end=pos;if(pos<steps.length&&steps[pos].type==='end_if')pos++;
+        html+=`<div class="om-tree-decision">${node(step,i)}<div class="om-tree-split"><div class="om-tree-lane yes"><div class="om-tree-lane-label">✓ YES · Condition true</div>${yes||'<div class="om-tree-empty">No actions yet</div>'}${add(branchBoundary(i,'else'))}</div><div class="om-tree-lane no"><div class="om-tree-lane-label">✕ NO · Condition false</div>${no||'<div class="om-tree-empty">No actions yet</div>'}${add(end)}</div></div><div class="om-tree-join">◆ MERGE · Continue workflow</div></div>`;
+      }else if(step.type==='else'||step.type==='end_if'){html+=`<div class="om-tree-warning">Unmatched ${escape(step.type)} at action ${i+1}</div>`;}
+      else html+=`<div class="om-tree-action">${node(step,i)}</div>`;
+    }
+    return html;
+  }
+  return sequence();
+}
+function renderCore(){get('autoNodes').innerHTML=treeMarkup();get('autoMinimapNodes').innerHTML=Array.from({length:steps.length+1},(_,i)=>`<i class="${i===0?'trigger':''}"></i>`).join('');status();}
+let render=renderCore;
+function tab(name){document.querySelectorAll('#automation [data-auto-tab]').forEach(x=>x.setAttribute('aria-selected',String(x.dataset.autoTab===name)));document.querySelectorAll('#automation [data-auto-view]').forEach(x=>x.hidden=x.dataset.autoView!==name);}
+function fresh(){id=null;enabled=false;steps=[{type:'notify',title:'',message:''}];get('autoName').value='';get('autoSection').value='publishing';events('publishing');render();drawList();tab('builder');}
+function applyDefinition(w){get('autoName').value=w.name||'';get('autoSection').value=w.section;events(w.section);get('autoEvent').value=w.event_type;const sc=w.schedule||{};if(sc.every_minutes)get('autoEvery').value=sc.every_minutes;if(sc.daily_at)get('autoDaily').value=sc.daily_at;scheduleUI();steps=(w.steps||[]).map(x=>({...x}));render();}
+function drawList(){const term=get('autoSearch').value.trim().toLowerCase();get('autoWorkflows').innerHTML=list.filter(w=>w.name.toLowerCase().includes(term)).map(w=>{const st=w.stats||{};const last=st.last_run?new Date(st.last_run*1000).toLocaleString():'never';return `<div class="om-auto-item" data-id="${escape(w.id)}" aria-current="${w.id===id?'true':'false'}" role="button" tabindex="0"><strong>${w.enabled?'🟢':'⚪'} ${escape(w.name)}</strong><small>${escape(labelFor(w.section,w.event_type))}</small><small class="${st.failed?'bad':'ok'}">${st.total||0} runs · ${st.failed||0} failed · last ${escape(last)}</small><span class="om-auto-item-actions"><button type="button" data-dup="${escape(w.id)}">Duplicate</button><button type="button" data-del="${escape(w.id)}">Delete</button></span></div>`}).join('')||'<p class="muted small">No workflows yet. Start from a template ★</p>';}
+function labelFor(section,ev){const o=(EVENTS[section]||[]).find(x=>x.value===ev);return section+' · '+(o?o.label:ev);}
+function open(w){id=w.id;enabled=!!w.enabled;applyDefinition(w);drawList();tab('builder');loadRuns();}
+function runMarkup(r,stepsList){const icon={completed:'✅',failed:'❌',skipped:'⏭',pending:'⏳',cancelled:'⛔'}[r.state]||'•';return `<details class="om-auto-run" data-run="${escape(r.id)}"><summary>${icon} <strong>${escape(r.name)}</strong> <span>${escape(r.state)}${r.manual?' · test':''}</span> <small class="muted">${escape(r.event_type||'')} · ${escape(new Date(r.created_at*1000).toLocaleString())}</small>${r.state==='failed'?`<button type="button" data-retry="${escape(r.id)}">Retry</button>`:''}</summary>${r.error?`<p class="err">${escape(r.error)}</p>`:''}<ol>${(stepsList||[]).map(s=>`<li class="st-${escape(s.status)}">${escape(s.status)} — ${escape(s.detail)}</li>`).join('')||'<li>Open to load steps…</li>'}</ol></details>`;}
+let overview=null;
+async function load(){try{const [d,c]=await Promise.all([call('/overview'),call('/catalog')]);overview=d;EVENTS=c.events;TEMPLATES=c.templates;DESTINATIONS=c.destinations;list=d.workflows;drawList();events(get('autoSection').value);if(id){const m=list.find(w=>w.id===id);if(m){enabled=!!m.enabled;status();scheduleUI();}}drawTemplates();loadRuns();badge(d.unread);if(steps.some(s=>s.type==='publish_draft'))render();}catch(e){note('Unable to load automation: '+e.message);}}
+function loadRuns(){if(!overview)return;const d=overview;const mine=d.runs.filter(r=>!id||r.workflow_id===id);get('autoEnrollments').innerHTML=mine.slice(0,60).map(r=>runMarkup(r)).join('')||'<p>No runs for this workflow yet. Use ▶ Test with sample data.</p>';const t=d.totals||{};get('autoHistory').innerHTML=`<p>✅ ${t.completed||0} completed · ⏭ ${t.skipped||0} skipped · ⏳ ${t.pending||0} waiting · ❌ ${t.failed||0} failed</p>`+d.runs.slice(0,30).map(r=>runMarkup(r)).join('')+'<h4>Notifications</h4>'+(d.notifications.slice(0,30).map(n=>`<div class="backup-row"><strong>${escape(n.title)}</strong> <small>${escape(n.section)} · ${escape(new Date(n.created_at*1000).toLocaleString())}</small><p>${escape(n.message)}</p></div>`).join('')||'<p class="muted">No notifications yet.</p>');}
+function drawTemplates(){get('autoTemplates').innerHTML=TEMPLATES.map(t=>`<button type="button" class="om-auto-template" data-template="${escape(t.key)}"><strong>${escape(t.name)}</strong><small>${escape(t.description)}</small></button>`).join('');}
+function collect(){const name=get('autoName').value.trim(),section=get('autoSection').value,event_type=get('autoEvent').value;if(!name)throw Error('Give the workflow a name (top left)');if(!steps.length)throw Error('Add at least one action');if(steps.length>60)throw Error('Maximum 60 actions');
+for(const [i,s] of steps.entries()){const n='Action '+(i+1)+': ';if(s.type==='notify'&&!String(s.title||'').trim())throw Error(n+'notification title is required');if(s.type==='webhook'&&!/^https:\/\//.test(s.url||''))throw Error(n+'paste the https:// webhook URL');if(s.type==='publish_draft'&&!(s.accounts||[]).length)throw Error(n+'tick at least one destination');if(s.type==='wait'&&(!Number.isInteger(Number(s.seconds))||Number(s.seconds)<1||Number(s.seconds)>604800))throw Error(n+'delay must be between 1 second and 7 days');}
+const body={id,name,section,event_type,steps};if(section==='schedule')body.schedule=event_type==='interval'?{every_minutes:Number(get('autoEvery').value)}:{daily_at:get('autoDaily').value};return body;}
+async function save(){const payload=collect();const response=await call('/workflows',jsonBody(payload));id=response.id;await load();return response;}
+function badge(n){const b=document.querySelector('[data-tab="automation"]');if(!b)return;let x=b.querySelector('.auto-badge');if(!n){x?.remove();return;}if(!x){x=document.createElement('b');x.className='auto-badge';x.style.cssText='margin-left:auto;min-width:18px;padding:0 5px;border-radius:9px;background:var(--danger);color:#fff;font-size:11px;line-height:18px;text-align:center';b.append(x);}x.textContent=n>99?'99+':n;}
+// events
+get('autoSection')?.addEventListener('change',e=>events(e.target.value));
+get('autoEvent')?.addEventListener('change',scheduleUI);
+get('autoNew')?.addEventListener('click',fresh);
+get('autoShowTemplates')?.addEventListener('click',()=>tab('templates'));
+get('autoRefresh')?.addEventListener('click',load);
+get('autoSearch')?.addEventListener('input',drawList);
+get('autoTemplates')?.addEventListener('click',async e=>{const b=e.target.closest('[data-template]');if(!b)return;try{const t=await call('/templates/'+encodeURIComponent(b.dataset.template));id=null;enabled=false;applyDefinition(t);tab('builder');drawList();note('Template loaded — fill in anything empty, then Save & turn on.');}catch(err){note(err.message);}});
+get('autoWorkflows')?.addEventListener('click',async e=>{const del=e.target.closest('[data-del]'),dup=e.target.closest('[data-dup]');
+ if(del){e.stopPropagation();const w=list.find(x=>x.id===del.dataset.del);if(!w||!confirm(`Delete “${w.name}”? Waiting runs are cancelled.`))return;try{await call('/workflows/'+encodeURIComponent(w.id),{method:'DELETE'});if(id===w.id)fresh();await load();note('Workflow deleted.');}catch(err){note(err.message);}return;}
+ if(dup){e.stopPropagation();try{const r=await call('/workflows/'+encodeURIComponent(dup.dataset.dup)+'/duplicate',{method:'POST'});await load();const w=list.find(x=>x.id===r.id);if(w)open(w);note('Copy created (off).');}catch(err){note(err.message);}return;}
+ const b=e.target.closest('[data-id]');if(b){const w=list.find(x=>x.id===b.dataset.id);if(w)open(w);}});
+let insertAt=null;get('autoAdd')?.addEventListener('click',()=>{insertAt=steps.length;get('autoActionPicker').hidden=!get('autoActionPicker').hidden;});
+get('autoNodes')?.addEventListener('click',e=>{const b=e.target.closest('[data-insert]');if(!b)return;insertAt=Number(b.dataset.insert);get('autoActionPicker').hidden=false;get('autoActionPicker').scrollIntoView({block:'nearest'});});
+get('autoActionPicker')?.addEventListener('click',e=>{const b=e.target.closest('[data-kind]');if(!b)return;const type=b.dataset.kind,at=insertAt??steps.length;
+ if(steps.length+(type==='if'?3:1)>60)return note('Maximum 60 actions.');
+ if(type==='else'||type==='end_if')return note('IF creates YES, NO and MERGE automatically.');
+ const step=type==='notify'?{type,title:'',message:''}:type==='webhook'?{type,url:'',format:'slack',message:'{{event_type}}: {{title}}'}:type==='publish_draft'?{type,accounts:[],title:'{{title}}',caption:'',privacy:'private'}:type==='wait'?{type,seconds:60}:['condition','if','filter'].includes(type)?{type,field:'status',operator:'equals',value:''}:['set_variable','increment'].includes(type)?{type,key:'score',value:type==='increment'?'1':''}:type==='format_text'?{type,key:'result',template:''}:type==='audit'?{type,message:''}:{type};
+ steps.splice(at,0,...(type==='if'?[step,{type:'else'},{type:'end_if'}]:[step]));get('autoActionPicker').hidden=true;insertAt=null;render();});
+function updateField(target){const n=target.closest('[data-index]');if(!n)return;const s=steps[Number(n.dataset.index)];
+ if(target.dataset.dest!==undefined){const set=new Set(s.accounts||[]);target.checked?set.add(target.dataset.dest):set.delete(target.dataset.dest);s.accounts=[...set];return;}
+ const f=target.dataset.field;if(!f)return;
+ if(f==='wait_amount'||f==='wait_unit'){const box=n.querySelector('.om-auto-fields');s.seconds=Math.round(Number(box.querySelector('[data-field="wait_amount"]').value||1)*Number(box.querySelector('[data-field="wait_unit"]').value||1));return;}
+ s[f]=target.value;}
+get('autoNodes')?.addEventListener('input',e=>updateField(e.target));
+get('autoNodes')?.addEventListener('change',e=>updateField(e.target));
+get('autoNodes')?.addEventListener('click',e=>{const b=e.target.closest('button[data-remove],button[data-move]');if(!b)return;const n=b.closest('[data-index]');if(!n)return;const i=Number(n.dataset.index);
+ if(b.dataset.remove){if(steps[i].type==='if'){let depth=0,end=i;for(let j=i+1;j<steps.length;j++){if(steps[j].type==='if')depth++;else if(steps[j].type==='end_if'){if(depth===0){end=j;break;}depth--;}}steps.splice(i,end-i+1);}else steps.splice(i,1);}
+ else if(b.dataset.move){if(['if','else','end_if'].includes(steps[i].type))return note('Move individual actions, not branch control nodes.');const j=i+(b.dataset.move==='up'?-1:1);if(j<0||j>=steps.length||['if','else','end_if'].includes(steps[j].type))return note('Use the add buttons within YES or NO to position actions.');[steps[i],steps[j]]=[steps[j],steps[i]];}render();});
+get('autoSave')?.addEventListener('click',async()=>{try{await save();note(enabled?'Saved — workflow is on.':'Saved (off). Click “Save & turn on” when ready.');}catch(e){note(e.message);}});
+get('autoPublish')?.addEventListener('click',async()=>{try{await save();if(!enabled){await call('/workflows/'+encodeURIComponent(id)+'/enabled',jsonBody({enabled:true},'PUT'));enabled=true;}await load();status();note('Workflow is on and listening for '+labelFor(get('autoSection').value,get('autoEvent').value)+'.');}catch(e){note(e.message);}});
+get('autoUnpublish')?.addEventListener('click',async()=>{try{await call('/workflows/'+encodeURIComponent(id)+'/enabled',jsonBody({enabled:false},'PUT'));enabled=false;await load();status();note('Workflow turned off.');}catch(e){note(e.message);}});
+get('autoTest')?.addEventListener('click',async()=>{try{await save();const r=await call('/workflows/'+encodeURIComponent(id)+'/test',{method:'POST'});await load();tab('enrollment');const first=get('autoEnrollments').querySelector('details');if(first){first.open=true;first.querySelector('ol').innerHTML=r.steps.map(s=>`<li class="st-${escape(s.status)}">${escape(s.status)} — ${escape(s.detail)}</li>`).join('');}note('Test finished — see the steps below.');}catch(e){note(e.message);}});
+document.querySelector('#automation')?.addEventListener('toggle',async e=>{const d=e.target;if(!(d instanceof HTMLDetailsElement)||!d.open||!d.dataset.run||d.dataset.loaded)return;d.dataset.loaded='1';try{const r=await call('/runs/'+encodeURIComponent(d.dataset.run));d.querySelector('ol').innerHTML=r.steps.map(s=>`<li class="st-${escape(s.status)}">${escape(s.status)} — ${escape(s.detail)}</li>`).join('')||'<li>No steps recorded.</li>';}catch(err){note(err.message);}},true);
+document.querySelector('#automation')?.addEventListener('click',async e=>{const b=e.target.closest('[data-retry]');if(!b)return;e.preventDefault();try{await call('/runs/'+encodeURIComponent(b.dataset.retry)+'/retry',{method:'POST'});await load();note('Run retried.');}catch(err){note(err.message);}});
+// datalist of fields for conditions
+const dl=document.createElement('datalist');dl.id='autoFieldList';dl.innerHTML=FIELDS.map(f=>`<option value="${f}">`).join('');document.body.append(dl);
+// canvas navigation
+let canvasZoom=1;
+function setZoom(next){canvasZoom=Math.max(.4,Math.min(1.6,Math.round(next*10)/10));get('autoCanvasTrack').style.transform=`scale(${canvasZoom})`;get('autoZoomValue').textContent=Math.round(canvasZoom*100)+'%';const flow=document.querySelector('#automation .om-auto-flow');if(flow){get('autoCanvasTrack').style.width=(Math.max(flow.scrollWidth,920)*canvasZoom)+'px';get('autoCanvasTrack').style.height=(flow.scrollHeight*canvasZoom)+'px';}}
+get('autoZoomIn')?.addEventListener('click',()=>setZoom(canvasZoom+.1));
+get('autoZoomOut')?.addEventListener('click',()=>setZoom(canvasZoom-.1));
+get('autoZoomReset')?.addEventListener('click',()=>setZoom(1));
+get('autoFit')?.addEventListener('click',()=>{const view=get('autoCanvasViewport'),flow=document.querySelector('#automation .om-auto-flow');if(!flow)return;setZoom(Math.min(1,(view.clientHeight-70)/Math.max(flow.scrollHeight,1),(view.clientWidth-70)/Math.max(flow.scrollWidth,920)));view.scrollTop=0;});
+get('autoToggleSidebar')?.addEventListener('click',()=>get('automation').classList.toggle('om-auto-sidebar-hidden'));
+document.querySelectorAll('#automation [data-auto-tab]').forEach(b=>b.addEventListener('click',()=>{tab(b.dataset.autoTab);if(b.dataset.autoTab==='logs'){call('/notifications/read',{method:'POST'}).then(()=>badge(0)).catch(()=>{});}}));
+render=function(){renderCore();setZoom(canvasZoom);};
+// Live notifications from workflows anywhere in OMNIA.
+async function poll(){try{const d=await call('/notifications?since='+lastNote);if(lastNote&&d.notifications.length)d.notifications.slice(-3).forEach(n=>window.omniaNotify?.('🔔 '+n.title+(n.message?' — '+n.message:'')));lastNote=d.now;badge(d.unread);}catch{}}
+setInterval(()=>{if(!document.hidden)poll();},20000);setTimeout(poll,3000);
+window.addEventListener('omnia:tab',e=>{if(e.detail==='automation')load()});
+document.querySelector('[data-tab="automation"]')?.addEventListener('click',load);
+fresh();
+})();
