@@ -7,8 +7,8 @@
 <title>OMNIA IQ | Intelligence Operating System</title>
 <link rel="icon" type="image/svg+xml" href="/static/omnia-iq-logo.svg">
 <link rel="icon" type="image/png" href="/static/omnia-iq-logo.png">
-<link rel="stylesheet" href="/static/style.css?v=88.4.0">
-<link rel="stylesheet" href="/static/brand.css?v=88.4.0">
+<link rel="stylesheet" href="/static/style.css?v=88.5.1">
+<link rel="stylesheet" href="/static/brand.css?v=88.5.1">
 </head>
 <body data-tab="chat">
 <!-- OMNIA IQ icon set: one stroke family (24px grid, 1.8 stroke, round caps). Use <svg class="i"><use href="#i-name"/></svg>. -->
@@ -84,22 +84,24 @@
     <input id="conversationSearch" class="conversation-search" type="search" placeholder="Search conversations" aria-label="Search conversations" />
     <div id="conversationList" class="conversation-list"></div>
     <nav aria-label="Main">
-      <div class="nav-group">Workspace</div>
-      <button data-tab="chat" class="active"><svg class="i"><use href="#i-chat"/></svg><span class="label">Chat</span></button>
-      <button data-tab="files"><svg class="i"><use href="#i-folder"/></svg><span class="label">Files</span></button>
-      <button data-tab="dashboard"><svg class="i"><use href="#i-grid"/></svg><span class="label">Dashboard</span></button>
-      <div class="nav-group">Create</div>
-      <button data-tab="studios"><svg class="i"><use href="#i-film"/></svg><span class="label">Video Studio</span></button>
-      <button data-tab="tasks"><svg class="i"><use href="#i-layers"/></svg><span class="label">Projects</span></button>
-      <button data-tab="memory"><svg class="i"><use href="#i-spark"/></svg><span class="label">Memory</span></button>
-      <div class="nav-group">Ship</div>
-      <button data-tab="agentstudio"><svg class="i"><use href="#i-spark"/></svg><span class="label">Agent Studio</span></button>
-      <button data-tab="automation"><svg class="i"><use href="#i-gear"/></svg><span class="label">Automation</span></button>
-      <button data-tab="publishing"><svg class="i"><use href="#i-send"/></svg><span class="label">Publishing</span></button>
-      <button data-tab="launch"><svg class="i"><use href="#i-rocket"/></svg><span class="label">Launch</span></button>
-      <button data-tab="settings"><svg class="i"><use href="#i-gear"/></svg><span class="label">Settings</span></button>
+      <div class="nav-group" data-mode="user">Workspace</div>
+      <button data-tab="chat" data-mode="user" class="active"><svg class="i"><use href="#i-chat"/></svg><span class="label">Chat</span></button>
+      <button data-tab="files" data-mode="user"><svg class="i"><use href="#i-folder"/></svg><span class="label">Files</span></button>
+      <button data-tab="dashboard" data-mode="user"><svg class="i"><use href="#i-grid"/></svg><span class="label">Dashboard</span></button>
+      <div class="nav-group" data-mode="user">Create</div>
+      <button data-tab="studios" data-mode="user"><svg class="i"><use href="#i-film"/></svg><span class="label">Video Studio</span></button>
+      <button data-tab="tasks" data-mode="user"><svg class="i"><use href="#i-layers"/></svg><span class="label">Projects</span></button>
+      <button data-tab="memory" data-mode="user"><svg class="i"><use href="#i-spark"/></svg><span class="label">Memory</span></button>
+      <div class="nav-group" data-mode="admin">Administration</div>
+      <button data-tab="admin" data-mode="admin"><svg class="i"><use href="#i-grid"/></svg><span class="label">Admin Dashboard</span></button>
+      <button data-tab="settings" data-mode="admin"><svg class="i"><use href="#i-gear"/></svg><span class="label">Settings</span></button>
+      <div class="nav-group" data-mode="admin">Operations</div>
+      <button data-tab="agentstudio" data-mode="admin"><svg class="i"><use href="#i-spark"/></svg><span class="label">Agent Studio</span></button>
+      <button data-tab="automation" data-mode="admin"><svg class="i"><use href="#i-gear"/></svg><span class="label">Automation</span></button>
+      <button data-tab="publishing" data-mode="admin"><svg class="i"><use href="#i-send"/></svg><span class="label">Publishing</span></button>
     </nav>
-    <div class="sidebar-foot"><span class="foot-dot"></span><span>v88.1 · local-first</span></div>
+    <div id="accountBox" class="account-box" hidden></div>
+    <div class="sidebar-foot"><span class="foot-dot"></span><span>v88.5 · cloud</span></div>
     <div class="sidebar-bottom" hidden>
       <div id="providerList" class="providers"></div>
       <small>One intelligence. Unlimited possibilities.</small>
@@ -114,8 +116,8 @@
         <p id="status">Checking connected intelligence…</p>
       </div>
       <div class="header-toggle-group">
-        <label class="web-toggle" id="agentModeToggle" title="On: OMNIA plans and uses tools - web search, reading pages, creating files, and your browser through the OMNIA extension (every browser action needs your approval). Off: one direct answer."><input id="agentMode" type="checkbox" checked><span></span><b id="agentLabel">Agent mode</b></label>
-        <label class="web-toggle" id="modeToggle" title="Off: fastest single-model response. On: several local models collaborate."><input id="web" type="checkbox"><span></span><b id="modeLabel">Fast local</b></label>
+        <label class="web-toggle" id="agentModeToggle" title="On: OMNIA plans and uses tools - web search, reading pages, creating files,. Off: one direct answer."><input id="agentMode" type="checkbox" checked><span></span><b id="agentLabel">Agent mode</b></label>
+        <label class="web-toggle" id="modeToggle" title="Off: fastest single-model response. On: several AI models collaborate."><input id="web" type="checkbox"><span></span><b id="modeLabel">Fast</b></label>
         <label class="web-toggle" id="webSearchModeToggle" title="Off: answers from the model's own training data. On: OMNIA IQ searches the web first and grounds its answer in current sources."><input id="webSearch" type="checkbox"><span></span><b id="webSearchLabel">No web search</b></label>
       </div>
     </header>
@@ -134,7 +136,7 @@
         <label class="icon-button" title="Attach file" aria-label="Attach file"><svg class="i"><use href="#i-clip"/></svg><input id="chatFile" type="file" hidden></label>
         <button id="send" type="submit">Send <svg class="i"><use href="#i-arrow-up"/></svg></button>
       </form>
-      <div class="composer-note"><label class="agent-model-pick" title="Which model Agent mode uses. Auto picks the best ready model that supports tool calling."><span>Model</span><select id="agentModel"><option value="">Auto · best tool-capable model</option></select></label><label class="agent-model-pick" title="Answer as one of your Agent Studio specialists. OMNIA keeps its own tools and approval rules."><span>Agent</span><select id="chatAgent"><option value="">OMNIA (default)</option></select></label><span id="agentBrowserChip" class="agent-chip">Browser extension</span> OMNIA can make mistakes. Verify important outputs.</div>
+      <div class="composer-note"><label class="agent-model-pick" title="Which model Agent mode uses. Auto picks the best ready model that supports tool calling."><span>Model</span><select id="agentModel"><option value="">Auto · best tool-capable model</option></select></label><label class="agent-model-pick" title="Answer as one of your Agent Studio specialists. OMNIA keeps its own tools and approval rules."><span>Agent</span><select id="chatAgent"><option value="">OMNIA (default)</option></select></label> OMNIA can make mistakes. Verify important outputs.</div>
     </section>
 
     <section id="agentstudio" class="tab">
@@ -394,124 +396,7 @@
     </section>
 
     <!-- ============================== LAUNCH CENTER ============================== -->
-    <section id="launch" class="tab">
-      <div class="page-hero">
-        <div class="page-hero-icon"><svg class="i"><use href="#i-rocket"/></svg></div>
-        <div class="page-hero-copy"><div class="eyebrow">DOMAIN &amp; WEB SERVER</div><h2>Launch Center</h2><p>Put OMNIA IQ on your own domain with automatic HTTPS from Caddy. Use the one-click setup, or open the advanced steps for full control.</p></div>
-        <div class="state-card"><small>Launch state</small><strong id="launchStatePill" class="state-pill">NOT CONFIGURED</strong></div>
-      </div>
-
-      <div class="hosting-overview" aria-label="Hosting overview">
-        <div class="host-stat"><small>Site health</small><strong id="hostHealth">Not configured</strong></div>
-        <div class="host-stat"><small>Access</small><strong id="hostAccess">Private</strong></div>
-        <div class="host-stat"><small>HTTPS</small><strong id="hostHttps">Not enabled</strong></div>
-        <div class="host-stat"><small>Release</small><strong id="hostRelease">None</strong></div>
-      </div>
-      <div class="panel golive" id="goLivePanel">
-        <div class="golive-copy">
-          <div class="eyebrow">QUICK SETUP</div>
-          <h3><svg class="i"><use href="#i-rocket"/></svg> Go live in one click</h3>
-          <p class="muted small">Enter your domain. OMNIA will create an access key if you don't have one, install Caddy (the official build, checksum-checked), start HTTPS and run the launch checks. Before you click, point your domain's <b>A record</b> at this computer's public IP and forward router ports <b>80</b> and <b>443</b> to this computer.</p>
-        </div>
-        <form id="goLiveForm" class="golive-form">
-          <label>Domain<input id="goLiveDomain" placeholder="app.yourdomain.com" required autocomplete="off"></label>
-          <label>Email for certificate notices <small class="muted">(optional)</small><input id="goLiveEmail" type="email" placeholder="you@example.com" autocomplete="email"></label>
-          <button class="primary" id="goLiveButton"><svg class="i"><use href="#i-globe"/></svg> Go live</button>
-        </form>
-        <ol id="goLiveSteps" class="golive-steps" hidden></ol>
-        <div id="goLiveKey" class="golive-key" hidden></div>
-      </div>
-
-      <div class="launch-layout" id="launchReadiness">
-        <div class="panel">
-          <div class="panel-title"><div><h3><svg class="i"><use href="#i-shield"/></svg> Host readiness</h3><p class="muted small" id="launchPreflightSummary">Checking what this computer can do…</p></div>
-            <div class="btn-row"><button type="button" id="launchDetectIp" class="ghost"><svg class="i"><use href="#i-globe"/></svg> Detect public IP</button><button type="button" id="launchRecheck" class="ghost"><svg class="i"><use href="#i-refresh"/></svg> Re-check</button></div></div>
-          <ul id="launchPreflight" class="check-list"><li class="skeleton">Running preflight…</li></ul>
-        </div>
-        <div class="panel">
-          <h3><svg class="i"><use href="#i-target"/></svg> Choose a launch path</h3>
-          <div class="path-grid" id="launchPaths" role="radiogroup" aria-label="Launch path">
-            <button type="button" class="path-card" data-path="local" role="radio"><svg class="i"><use href="#i-lock"/></svg><strong>Private</strong><small>Only this computer. Nothing exposed. Works now.</small><em class="path-badge"></em></button>
-            <button type="button" class="path-card" data-path="public" role="radio"><svg class="i"><use href="#i-globe"/></svg><strong>Public · your domain</strong><small>Caddy issues HTTPS. Needs ports 80/443 forwarded and an access key.</small><em class="path-badge"></em></button>
-            <button type="button" class="path-card" data-path="tunnel" role="radio"><svg class="i"><use href="#i-cloud"/></svg><strong>Public · Cloudflare Tunnel</strong><small>No port forwarding. Best behind a home router or carrier NAT.</small><em class="path-badge"></em></button>
-          </div>
-          <div id="launchTunnelGuide" class="guide-card" hidden></div>
-        </div>
-      </div>
-
-      <details class="manual-steps" id="launchManual"><summary><svg class="i"><use href="#i-sliders"/></svg> Advanced: step-by-step launch, DNS automation &amp; Cloudflare Tunnel</summary>
-      <ol class="pipeline" id="launchPipeline" aria-label="Launch progress">
-        <li data-step="configure"><span><svg class="i"><use href="#i-sliders"/></svg></span><b>Configure</b></li>
-        <li data-step="runtime"><span><svg class="i"><use href="#i-server"/></svg></span><b>Runtime</b></li>
-        <li data-step="dns"><span><svg class="i"><use href="#i-network"/></svg></span><b>Domain</b></li>
-        <li data-step="https"><span><svg class="i"><use href="#i-lock"/></svg></span><b>HTTPS</b></li>
-        <li data-step="verify"><span><svg class="i"><use href="#i-pulse"/></svg></span><b>Verify</b></li>
-        <li data-step="live"><span><svg class="i"><use href="#i-globe"/></svg></span><b>Live</b></li>
-      </ol>
-
-      <div class="panel step-panel" data-step-panel="configure">
-        <div class="step-head"><span class="step-num">1</span><div><h3>Configure the project</h3><p class="muted small">Saved locally. Changing settings requires the server to be stopped.</p></div></div>
-        <form id="launchConfig" class="form-grid three">
-          <label>What to launch<select id="launchTargetApp"><option value="omnia">OMNIA IQ web application</option><option value="static">Separate static website</option></select></label>
-          <label>Project ID<input id="launchProject" value="omnia-web" required pattern="[a-zA-Z0-9_\-]{1,60}"></label>
-          <label>Environment<select id="launchEnv"><option>staging</option><option>production</option></select></label>
-          <label>Launch mode<select id="launchMode"><option value="local">Local only</option><option value="lan">LAN (static sites)</option><option value="public">Public via HTTPS proxy</option></select></label>
-          <label>Bind address<input id="launchBind" value="127.0.0.1" required></label>
-          <label>Origin port<input id="launchPort" type="number" value="8000" min="1024" max="65535"></label>
-          <label>Domain hostname<input id="launchDomain" placeholder="app.example.com"></label>
-          <label>Registrar <small class="muted">(for your notes)</small><input id="launchRegistrar" placeholder="Namecheap, GoDaddy, Cloudflare…"></label>
-          <label>Cloudflare zone ID <small class="muted">(optional)</small><input id="launchZone" placeholder="32-character zone ID"></label>
-          <label>Certificate email <small class="muted">(optional)</small><input id="launchEmail" type="email" placeholder="you@example.com"></label>
-          <div class="span-3 form-actions"><button type="button" id="launchRefresh" class="ghost"><svg class="i"><use href="#i-refresh"/></svg> Load saved</button><button type="submit" class="primary"><svg class="i"><use href="#i-check"/></svg> Save configuration</button></div>
-        </form>
-      </div>
-
-      <div class="panel step-panel" data-step-panel="runtime">
-        <div class="step-head"><span class="step-num">2</span><div><h3>Runtime</h3><p class="muted small" id="launchAppNote">OMNIA is already running on this computer. Validate it on its origin port; no website ZIP is needed. Stopping public access leaves OMNIA itself running.</p></div></div>
-        <div id="launchStaticRelease" hidden>
-          <p class="muted small">Upload a static website ZIP with index.html at its root (max 30 MB, 5,000 files). OMNIA's private API and data stay outside the website server.</p>
-          <form id="launchUpload" class="input-row"><input id="launchZip" type="file" accept=".zip" required><button class="primary"><svg class="i"><use href="#i-upload"/></svg> Upload &amp; activate release</button></form>
-        </div>
-        <div class="launch-actions btn-row"><button data-launch-action="start" id="launchStart" class="primary">Validate OMNIA runtime</button><button data-launch-action="stop" id="launchStop">Stop public access</button><button data-launch-action="rollback" id="launchRollback" hidden>Rollback static release</button><button id="launchOpen" class="ghost"><svg class="i"><use href="#i-external"/></svg> Open local site</button></div>
-      </div>
-
-      <div class="panel step-panel" data-step-panel="dns">
-        <div class="step-head"><span class="step-num">3</span><div><h3>Domain &amp; DNS</h3><p class="muted small">Point your hostname at this server's public IP. With CLOUDFLARE_API_TOKEN and a zone ID OMNIA edits only that one record and keeps a restore snapshot; otherwise create the record at your registrar.</p></div></div>
-        <div class="dns-recipe" id="launchDnsRecipe"></div>
-        <form id="launchDNS" class="form-grid three"><label>Record type<select id="launchRecord"><option>A</option><option>AAAA</option><option>CNAME</option></select></label><label class="span-2">Public IP or target hostname<span class="input-row"><input id="launchTarget" required placeholder="203.0.113.10"><button type="button" id="launchUseIp" class="ghost" title="Use the detected public IP">Use detected IP</button></span></label>
-          <div class="span-3 form-actions"><button type="button" data-launch-action="dns-restore" class="ghost">Restore DNS snapshot</button><button class="primary"><svg class="i"><use href="#i-network"/></svg> Apply DNS record via Cloudflare</button></div></form>
-      </div>
-
-      <div class="panel step-panel" data-step-panel="https">
-        <div class="step-head"><span class="step-num">4</span><div><h3>HTTPS proxy</h3><p class="muted small">Caddy obtains and renews the certificate automatically. Public OMNIA requires OMNIA_ACCESS_KEY; launch controls stay blocked from the internet.</p></div></div>
-        <div class="launch-actions btn-row"><button data-launch-action="proxy-start" class="primary"><svg class="i"><use href="#i-lock"/></svg> Start HTTPS proxy</button><button data-launch-action="proxy-stop">Stop HTTPS proxy</button><button id="launchCaddy" class="ghost"><svg class="i"><use href="#i-download"/></svg> Download Caddyfile</button></div>
-      </div>
-
-      <div class="panel step-panel" data-step-panel="verify">
-        <div class="step-head"><span class="step-num">5</span><div><h3>Verify &amp; confirm</h3><p class="muted small">Verify runs origin, DNS (two public resolvers), HTTPS, asset and access-protection checks. A computer can't prove it is reachable from outside, so LIVE needs your confirmation from another network.</p></div></div>
-        <div class="launch-actions btn-row"><button data-launch-action="verify" class="primary"><svg class="i"><use href="#i-pulse"/></svg> Run verification</button></div>
-        <div id="launchChecks" class="check-grid"></div>
-        <form id="launchAttest" class="form-grid" aria-labelledby="launchAttestTitle">
-          <h4 id="launchAttestTitle" class="span-2">Confirm LIVE from another network</h4>
-          <label class="span-2">What did you check, and from where?<textarea id="launchAttestNote" rows="2" maxlength="500" placeholder="Opened https://app.example.com on my phone over mobile data; padlock valid and the OMNIA sign-in appeared."></textarea></label>
-          <div class="span-2 form-actions"><button type="submit" class="primary"><svg class="i"><use href="#i-globe"/></svg> Confirm LIVE</button></div>
-        </form>
-      </div>
-
-      </details>
-
-      <details class="panel"><summary><svg class="i"><use href="#i-server"/></svg> Diagnostics &amp; logs</summary><pre id="launchStatus" aria-live="polite">Save or load a project to begin.</pre></details>
-      <details class="panel"><summary><svg class="i"><use href="#i-refresh"/></svg> Site management &amp; configuration backups</summary>
-      <div class="hosting-tools"><div><h3>Site management</h3><p class="muted small">Hosting-style overview and configuration recovery. Backups contain launcher settings only, not OMNIA projects, databases, or media.</p></div>
-        <div class="btn-row"><button type="button" id="hostBackup" class="ghost">Back up configuration</button><button type="button" id="hostRefreshBackups" class="ghost">Refresh snapshots</button></div>
-        <label>Restore a saved configuration <select id="hostBackupList"><option value="">No snapshots loaded</option></select></label>
-        <button type="button" id="hostRestore" class="ghost">Restore selected configuration</button>
-        <p class="muted small" id="hostBackupFeedback" aria-live="polite"></p>
-      </div>
-
-      </details>
-    </section>
-
+    <section id="admin" class="tab"><div id="adminConsole"></div></section>
     <section id="dashboard" class="tab">
       <div class="section-heading"><div><div class="eyebrow">PRODUCTION CONTROL</div><h2>Dashboard</h2><p>Manage active projects, production stages, artifacts, and specialist studios.</p></div></div>
       <div class="metric-grid">
@@ -700,33 +585,11 @@
     </section>
 
     <section id="settings" class="tab">
-      <div class="section-heading"><div><div class="eyebrow">SYSTEM CAPABILITIES</div><h2>Settings</h2><p>Manage local production runtimes used to create real project files.</p></div></div>
-      <div class="panel ollama-lib" id="ollamaLibrary">
-        <div class="panel-title"><div><h3><svg class="i"><use href="#i-server"/></svg> Ollama models</h3><p class="muted small" id="ollamaSummary">Checking Ollama…</p></div><button type="button" id="ollamaRefresh">Refresh</button></div>
-        <h4 class="ollama-h">Installed — all are available to OMNIA automatically</h4>
-        <div id="ollamaInstalled" class="ollama-grid"></div>
-        <h4 class="ollama-h">Free agentic models to add</h4>
-        <p class="muted small">Models with <b>tools</b> can act as agents (search, files, browser). Sizes are approximate downloads; pick ones that fit your RAM. <b>Cloud</b> models run on Ollama's free cloud after you run <code>ollama signin</code> once on this computer.</p>
-        <div id="ollamaCatalog" class="ollama-grid"></div>
-        <form id="ollamaCustom" class="ollama-custom"><input id="ollamaTag" placeholder="Any model from ollama.com/library, e.g. qwen3:8b or hf.co/user/repo:Q4_K_M" autocomplete="off" spellcheck="false"><button class="primary" type="submit"><svg class="i"><use href="#i-download"/></svg> Pull model</button></form>
-      </div>
-      <div class="panel agent-settings" id="agentSettings">
-        <div class="panel-title"><div><h3><svg class="i"><use href="#i-wand"/></svg> Assistant agent &amp; browser extension</h3><p class="muted small">Agent mode lets Chat plan and use tools: web search, reading pages, a per-conversation file workspace, memory and your Chrome browser. Browser actions that change anything always wait for your approval.</p></div><button type="button" id="agentSettingsRefresh">Refresh</button></div>
-        <div class="agent-settings-grid">
-          <div class="runtime-card" id="agentBrowserCard"><strong><span class="runtime-dot"></span>Chrome extension</strong><small id="agentBrowserDetail">Checking…</small></div>
-          <div class="runtime-card" id="agentCodeCard"><strong><span class="runtime-dot"></span>Code execution</strong><small id="agentCodeDetail">Checking…</small></div>
-          <div class="runtime-card" id="agentToolsCard"><strong><span class="runtime-dot"></span>Tools available now</strong><small id="agentToolsDetail">Checking…</small></div>
-        </div>
-        <ol class="agent-install">
-          <li><button type="button" id="agentExtensionDownload" class="primary"><svg class="i"><use href="#i-download"/></svg> Download extension</button> and unzip it.</li>
-          <li>Open <code>chrome://extensions</code>, turn on <b>Developer mode</b>, click <b>Load unpacked</b> and pick the <code>omnia-chrome</code> folder.</li>
-          <li>Click the OMNIA icon (Alt+O), open ⚙ and enter <code id="agentServerUrl">http://127.0.0.1:8000</code> plus your access key if you use one.</li>
-        </ol>
-      </div>
+      <div class="section-heading"><div><div class="eyebrow">SYSTEM CAPABILITIES</div><h2>Settings</h2><p>AI providers, voices, media services and backups for every OMNIA IQ user. Only administrators can see this page.</p></div></div>
       <div class="panel llm-config-panel">
-        <div class="panel-title"><div><h3>Cloud LLM Integrations</h3><p id="llmConfigSummary">Configure and test each cloud model directly, using the same local .env flow as Pexels.</p></div><button id="refreshLlmConfig" type="button">Refresh</button></div>
+        <div class="panel-title"><div><h3>Cloud LLM Integrations</h3><p id="llmConfigSummary">Add a free key for any provider; OMNIA uses every connected model and falls back automatically.</p></div><button id="refreshLlmConfig" type="button">Refresh</button></div>
         <div id="llmConfigGrid" class="llm-config-grid"></div>
-        <small class="runtime-note">Credentials are stored locally in the project <code>.env</code>. Saved API keys/tokens are masked and are never returned to the browser.</small>
+        <small class="runtime-note">Keys are encrypted in the OMNIA database. Saved keys are masked and never sent back to the browser.</small>
       </div>
 
       <div class="panel media-runtime-panel">
@@ -734,13 +597,13 @@
         <div id="mediaRuntime" class="runtime-grid"></div>
         <div class="production-capabilities"><strong>Professional Video Production Suite</strong><div id="productionFeatures" class="feature-chip-grid"></div></div>
         <div class="runtime-actions">
-          <button id="installFfmpeg" type="button">Install FFmpeg automatically</button>
-          <button id="installSpeech" type="button">Install Free Speech</button>
+          <button id="installFfmpeg" type="button" hidden>Install FFmpeg automatically</button>
+          <button id="installSpeech" type="button" hidden>Install Free Speech</button>
           <button id="testSpeech" type="button">Test speech</button>
         </div>
         <div class="pexels-config">
-          <div class="pexels-config-copy"><strong>Free Multilingual Speech</strong><small>Four free engines with automatic fallback: Edge neural (online, 70+ languages), Google voices (online), Piper (offline neural) and this computer's own voices. No API key needed.</small></div>
-          <select id="freeSpeechProvider"><option value="auto">Automatic: best free engine, with fallback (recommended)</option><option value="edge_tts">Edge neural voices (online)</option><option value="gtts">Google voices (online)</option><option value="piper">Piper offline neural voices</option><option value="system">This computer's voices (offline)</option><option value="elevenlabs">ElevenLabs (paid key)</option></select>
+          <div class="pexels-config-copy"><strong>Free Multilingual Speech</strong><small>Free Google voices in about 60 languages (no key needed), or ElevenLabs with your own key.</small></div>
+          <select id="freeSpeechProvider"><option value="auto">Automatic: best free engine, with fallback (recommended)</option><option value="gtts">Google voices (online)</option><option value="elevenlabs">ElevenLabs (paid key)</option></select>
           <input id="freeSpeechLocale" value="en-US" placeholder="Voice locale (e.g. en-US, fil-PH, es-MX)">
           <button id="listFreeVoices" type="button">Browse Native Voices</button>
           <select id="freeSpeechVoice"><option value="">Auto-select accent-matched voice</option></select>
@@ -803,14 +666,7 @@
 </div>
 <div id="connectionBanner" class="connection-banner hidden">Backend connection interrupted. OMNIA IQ will retry when you reload this page.</div>
 <div id="toast" class="toast hidden"></div>
-<script src="/static/video_studio.js?v=88.4.0"></script>
-<script src="/static/app.js?v=88.4.0"></script>
-<script src="/static/agent_chat.js?v=88.4.0"></script>
-<script src="/static/ollama_library.js?v=88.4.0"></script>
-<script src="/static/launch.js?v=88.4.0"></script>
-<script src="/static/publishing.js?v=88.4.0"></script>
-<script src="/static/agent_studio.js?v=88.4.0"></script>
-<script src="/static/automation.js?v=88.4.0"></script>
-<script src="/static/principles.js?v=88.4.0"></script>
+<script>window.OMNIA_SCRIPTS=["video_studio.js", "app.js", "agent_chat.js", "publishing.js", "agent_studio.js", "automation.js", "principles.js", "admin.js"];</script>
+<script src="/static/auth.js?v=88.5.1"></script>
 </body>
 </html>

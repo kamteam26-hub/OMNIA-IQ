@@ -8,6 +8,7 @@
   "dependencies": {
     "@libsql/client": "^0.15.0",
     "@vercel/blob": "^2.6.1",
-    "ffmpeg-static": "^5.2.0"
+    "ffmpeg-static": "^5.2.0",
+    "@vercel/functions": "^3.1.0"
   }
 }

@@ -10,6 +10,10 @@
       "destination": "/frontend/:path*"
     },
     {
+      "source": "/admin",
+      "destination": "/frontend/index.html"
+    },
+    {
       "source": "/",
       "destination": "/frontend/index.html"
     }
@@ -37,6 +41,12 @@
           "value": "same-origin"
         }
       ]
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/automation/tick",
+      "schedule": "0 1 * * *"
     }
   ]
 }
