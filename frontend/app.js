@@ -12,7 +12,7 @@ async function apiFetch(url,options={},timeoutMs=900000){
   const r=await fetch(url,{...options,signal:controller.signal});
   if(String(url).startsWith("/api/")&&[502,503,504,524].includes(r.status)){
    let detail="";try{detail=(await r.clone().json()).detail||""}catch(_){}
-   if(r.status===503&&detail)throw new Error(detail);
+   if(detail)throw new Error(detail);
    if(r.status===504||r.status===524)throw new Error("This took longer than the cloud time limit. Try a shorter request, or turn off Full harmony.");
    throw new Error("OMNIA IQ's cloud server didn't respond. Please try again in a moment.");
   }
