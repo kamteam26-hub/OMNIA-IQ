@@ -19,6 +19,8 @@
   .account-box strong{display:block;color:#f8fafc}.account-box small{color:#94a3b8}
   .account-box .acct-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
   .account-box a,.account-box button{font-size:12px;padding:5px 9px;border-radius:8px;border:1px solid rgba(148,163,184,.25);background:transparent;color:#e5e7eb;cursor:pointer;text-decoration:none}
+  .auth-show{display:flex!important;align-items:center;gap:6px;font-size:12px;color:#94a3b8;margin:4px 0 0!important;cursor:pointer}
+  .auth-show input{width:auto!important;margin:0!important}
   .account-box .mode-switch{border-color:#7c3aed;color:#c4b5fd}`;
   document.head.appendChild(css);
 
@@ -27,6 +29,12 @@
     const el = document.createElement('div'); el.className = 'auth-screen';
     el.innerHTML = `<form class="auth-card"><svg class="auth-logo" viewBox="0 0 64 64"><use href="#i-logo"/></svg>${html}<button type="submit">Continue</button><div class="auth-err" role="alert"></div></form>`;
     document.body.appendChild(el);
+    // "Show" toggle beside every hidden field so a typo in a key or password is easy to spot.
+    el.querySelectorAll('input[type=password]').forEach(inp => {
+      const t = document.createElement('label'); t.className = 'auth-show';
+      t.innerHTML = '<input type="checkbox"> Show'; inp.after(t);
+      t.querySelector('input').onchange = e => { inp.type = e.target.checked ? 'text' : 'password'; };
+    });
     const form = el.querySelector('form'), err = el.querySelector('.auth-err'), btn = el.querySelector('button');
     form.onsubmit = async e => {
       e.preventDefault(); err.textContent = ''; btn.disabled = true;
@@ -39,7 +47,7 @@
     const d = await r.json().catch(() => ({})); if (!r.ok) throw new Error(typeof d.detail === 'string' ? d.detail : 'Request failed'); return d;
   }
   const setupScreen = keyConfigured => screen(`<h1>Set up OMNIA IQ</h1><p>Create the administrator account. ${keyConfigured ? 'Enter the setup key you saved as OMNIA_ACCESS_KEY in Vercel.' : '<b>First add OMNIA_ACCESS_KEY (a private setup key) in Vercel → Settings → Environment Variables and redeploy.</b>'}</p>
-      <label>Setup key</label><input name="setup_key" type="password" autocomplete="off" required>
+      <label>Setup key</label><input name="setup_key" type="password" autocomplete="off" spellcheck="false" autocapitalize="off" required>
       <label>Admin username</label><input name="username" autocomplete="username" required pattern="[A-Za-z0-9._-]{3,40}">
       <label>Your name</label><input name="display_name" autocomplete="name">
       <label>Password (10+ characters, letters and numbers)</label><input name="password" type="password" autocomplete="new-password" required minlength="10">`,
