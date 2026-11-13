@@ -1,6 +1,6 @@
 // OMNIA IQ — cloud backend (runs entirely on Vercel).
 // AI:      Vercel AI Gateway (automatic on Vercel) or any OpenAI-compatible API (AI_API_KEY + AI_BASE_URL + AI_MODEL).
-// Storage: Vercel Blob (connect a Blob store to the project). Without it, data lives in memory only.
+// Storage: Vercel Blob, private store (connect a Blob store to the project). Without it, data lives in memory only.
 // Video:   MP4 rendering with ffmpeg-static (captioned scenes, no voice-over).
 import { createHash, randomUUID } from 'node:crypto';
 import { inflateRawSync } from 'node:zlib';
@@ -25,29 +25,36 @@ const ts13 = () => String(Date.now()).padStart(13, '0');
 
 /* ---------------------------------------------------------------- storage */
 // Every record is an immutable object; "updates" write a new version and delete the old one.
-function blobStore(token) {
-  const ns = 'omnia/' + createHash('sha256').update(token).digest('hex').slice(0, 20) + '/';
+function blobStore(storeId, token) {
+  // Private store. On Vercel the SDK signs in automatically with OIDC; BLOB_READ_WRITE_TOKEN is optional.
+  const ns = 'omnia/' + createHash('sha256').update(storeId || token).digest('hex').slice(0, 20) + '/';
+  const auth = token ? { token } : {};
   let sdk;
   const lib = async () => (sdk ||= await import('@vercel/blob'));
   return {
     kind: 'blob',
     async put(path, body, contentType) {
       const { put } = await lib();
-      const r = await put(ns + path, body, { access: 'public', addRandomSuffix: true, contentType, token });
+      const r = await put(ns + path, body, { access: 'private', addRandomSuffix: true, contentType, ...auth });
       return { url: r.url, downloadUrl: r.downloadUrl, pathname: r.pathname.slice(ns.length) };
     },
     async list(prefix) {
       const { list } = await lib();
       const out = []; let cursor;
       do {
-        const r = await list({ prefix: ns + prefix, cursor, limit: 1000, token });
+        const r = await list({ prefix: ns + prefix, cursor, limit: 1000, ...auth });
         for (const b of r.blobs) out.push({ url: b.url, downloadUrl: b.downloadUrl, pathname: b.pathname.slice(ns.length), size: b.size, uploadedAt: b.uploadedAt });
         cursor = r.hasMore ? r.cursor : undefined;
       } while (cursor);
       return out;
     },
-    async read(url) { const r = await fetch(url, { cache: 'no-store' }); if (!r.ok) throw new Error('Storage read failed'); return Buffer.from(await r.arrayBuffer()); },
-    async del(urls) { if (!urls.length) return; const { del } = await lib(); await del(urls, { token }); },
+    async read(url) {
+      const { get } = await lib();
+      const r = await get(url, { access: 'private', ...auth });
+      if (!r || !r.stream) throw new Error('Storage read failed');
+      return Buffer.from(await new Response(r.stream).arrayBuffer());
+    },
+    async del(urls) { if (!urls.length) return; const { del } = await lib(); await del(urls, auth); },
   };
 }
 function memoryStore() {
@@ -66,7 +73,7 @@ function memoryStore() {
     async del(urls) { urls.forEach(u => g.delete(u)); },
   };
 }
-const store = process.env.BLOB_READ_WRITE_TOKEN ? blobStore(process.env.BLOB_READ_WRITE_TOKEN) : memoryStore();
+const store = (process.env.BLOB_STORE_ID || process.env.BLOB_READ_WRITE_TOKEN) ? blobStore(process.env.BLOB_STORE_ID, process.env.BLOB_READ_WRITE_TOKEN) : memoryStore();
 const readJSON = async b => JSON.parse((await store.read(b.url)).toString('utf8'));
 const seg = (pathname, i) => pathname.split('/')[i];
 
